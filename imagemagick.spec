@@ -10,11 +10,13 @@
 %define enable_graphwiz	0
 %{?_with_graphwiz: %global enable_graphwiz 1}
 
+%define Name		ImageMagick
+
 %define major		10.7.0
-%define libname		%mklibname Magick %{major}
+%define libname		%mklibname magick %{major}
 %define fversion	6.3.2
 %define	rev		9
-%define rel		5
+%define rel		6
 %define qlev		Q16
 
 %define dversion	%{fversion}-%{rev}
@@ -30,7 +32,7 @@
 %endif
 
 Summary:	An X application for displaying and manipulating images
-Name:		ImageMagick
+Name:		imagemagick
 %if %rev > 0
 Version:	%{fversion}.%{rev}
 %else
@@ -58,6 +60,8 @@ Patch19:	ImageMagick-6.2.9-8-libpath.patch
 Patch20:	ImageMagick-6.2.5-fix-montageimages-test.patch
 Requires:	%{libname} = %{version}
 Requires:	ghostscript
+Obsoletes:	ImageMagick < 6.3.2.9-6
+Provides:	ImageMagick = %{version}-%{release}
 BuildRequires:	ghostscript
 BuildRequires:	bzip2-devel
 BuildRequires:	freetype2-devel >= 2.1.7
@@ -114,6 +118,7 @@ which is covered by software patents.
 Summary:	ImageMagick menus
 Group:		Graphics
 Requires:	xterm
+Obsoletes:	ImageMagick-desktop < 6.3.2.9-6
 
 %description	desktop
 This package contains the menu and .desktop entries to run the "display"
@@ -123,6 +128,7 @@ command from the menu.
 Summary:	ImageMagick libraries
 Group:		System/Libraries
 Obsoletes:	ImageMagick-lib	libMagick5
+Obsoletes:	%mklibname Magick %{major}
 Provides:	ImageMagick-lib = %{version}-%{release}
 Provides:	libMagick5 = %{version}-%{release}
 
@@ -133,9 +139,12 @@ linked with ImageMagick libraries.
 %package -n	%{libname}-devel
 Summary:	Static libraries and header files for ImageMagick app development
 Group:		Development/C
-Obsoletes:	%{name}-devel
+Obsoletes:	%{Name}-devel
 Obsoletes:	libMagick5-devel
+Obsoletes:	%mklibname Magick %{major} -d
 Provides:	%{name}-devel = %{version}-%{release}
+Provides:	%{Name}-devel = %{version}-%{release}
+Provides:	libmagick-devel = %{version}-%{release}
 Provides:	libMagick-devel = %{version}-%{release}
 Provides:	libMagick5-devel = %{version}-%{release}
 Requires:	%{libname} = %{version}
@@ -177,13 +186,14 @@ and support files for access to ImageMagick library from perl.
 %package	doc
 Summary:	%{name} Documentation
 Group:		Books/Other
+Obsoletes:	ImageMagick-doc < 6.3.2.9-6
 
 %description	doc
 This package contains HTML/PDF documentation of %{name}.
 
 %prep
 
-%setup -q -n %{name}-%{fversion}
+%setup -q -n %{Name}-%{fversion}
 %patch0 -p1 -b .docdir
 %patch4 -p1 -b .include
 %patch7 -p1 -b .urw
@@ -261,8 +271,8 @@ rm -rf %{buildroot}
 %makeinstall_std LD_RUN_PATH="" pkgdocdir=%{_datadir}/doc/%{name}-doc-%{fversion}
 
 # Remove unpackaged files
-rm -f %{buildroot}%{_libdir}/%{name}-%{fversion}/modules-%{qlev}/coders/*.a \
-      %{buildroot}%{_libdir}/%{name}-%{fversion}/modules-%{qlev}/filters/*.a \
+rm -f %{buildroot}%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/coders/*.a \
+      %{buildroot}%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/filters/*.a \
       %{buildroot}%{_libdir}/libltdl* 
 
 %if %mdkversion >= 1020
@@ -304,7 +314,7 @@ install -m 755 -d %{buildroot}%{_datadir}/applications/
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
 Encoding=UTF-8
-Name=%{name}
+Name=%{Name}
 Comment=Views Graphics files
 Exec=%{_bindir}/xterm -geometry 40x15 -title ImageMagick +sb -iconic -e %{_bindir}/display
 Icon=%{name}
@@ -341,16 +351,16 @@ rm -rf %{buildroot}
 %{_bindir}/mogrify
 %{_bindir}/montage
 %{_bindir}/stream
-%dir %{_libdir}/%{name}-%{fversion}
-%dir %{_libdir}/%{name}-%{fversion}/modules-%{qlev}
-%dir %{_libdir}/%{name}-%{fversion}/modules-%{qlev}/coders
-%dir %{_libdir}/%{name}-%{fversion}/config
-%{_datadir}/%{name}-%{fversion}
-%{_libdir}/%{name}-%{fversion}/config/*.xml
+%dir %{_libdir}/%{Name}-%{fversion}
+%dir %{_libdir}/%{Name}-%{fversion}/modules-%{qlev}
+%dir %{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/coders
+%dir %{_libdir}/%{Name}-%{fversion}/config
+%{_datadir}/%{Name}-%{fversion}
+%{_libdir}/%{Name}-%{fversion}/config/*.xml
 %if %build_modules
-%{_libdir}/%{name}-%{fversion}/modules-%{qlev}/filters
-%{_libdir}/%{name}-%{fversion}/modules-%{qlev}/coders/*.so
-%{_libdir}/%{name}-%{fversion}/modules-%{qlev}/coders/*.la
+%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/filters
+%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/coders/*.so
+%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/coders/*.la
 %endif
 %{_mandir}/man1/*
 %{_mandir}/man3/*
