@@ -15,8 +15,8 @@
 %define major		10.7.0
 %define libname		%mklibname magick %{major}
 %define fversion	6.3.2
-%define	rev		9
-%define rel		6
+%define rev 		9
+%define rel 		7
 %define qlev		Q16
 
 %define dversion	%{fversion}-%{rev}
@@ -128,7 +128,7 @@ command from the menu.
 Summary:	ImageMagick libraries
 Group:		System/Libraries
 Obsoletes:	ImageMagick-lib	libMagick5
-Obsoletes:	%mklibname Magick %{major}
+Obsoletes:	%mklibname Magick 10.7.0
 Provides:	ImageMagick-lib = %{version}-%{release}
 Provides:	libMagick5 = %{version}-%{release}
 
@@ -141,7 +141,7 @@ Summary:	Static libraries and header files for ImageMagick app development
 Group:		Development/C
 Obsoletes:	%{Name}-devel
 Obsoletes:	libMagick5-devel
-Obsoletes:	%mklibname Magick %{major} -d
+Obsoletes:	%mklibname Magick 10.7.0 -d
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	%{Name}-devel = %{version}-%{release}
 Provides:	libmagick-devel = %{version}-%{release}
