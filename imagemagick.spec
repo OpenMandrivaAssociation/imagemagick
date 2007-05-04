@@ -128,7 +128,7 @@ command from the menu.
 Summary:	ImageMagick libraries
 Group:		System/Libraries
 Obsoletes:	ImageMagick-lib	libMagick5
-Obsoletes:	%mklibname Magick 10.7.0
+Obsoletes:	%mklibname Magick %{major}
 Provides:	ImageMagick-lib = %{version}-%{release}
 Provides:	libMagick5 = %{version}-%{release}
 
@@ -141,7 +141,7 @@ Summary:	Static libraries and header files for ImageMagick app development
 Group:		Development/C
 Obsoletes:	%{Name}-devel
 Obsoletes:	libMagick5-devel
-Obsoletes:	%mklibname Magick 10.7.0 -d
+Obsoletes:	%mklibname Magick %{major} -d
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	%{Name}-devel = %{version}-%{release}
 Provides:	libmagick-devel = %{version}-%{release}
