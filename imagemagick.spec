@@ -313,7 +313,6 @@ EOF
 install -m 755 -d %{buildroot}%{_datadir}/applications/
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=%{Name}
 Comment=Views Graphics files
 Exec=%{_bindir}/xterm -geometry 40x15 -title ImageMagick +sb -iconic -e %{_bindir}/display
