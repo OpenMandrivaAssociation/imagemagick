@@ -16,7 +16,7 @@
 %define libname		%mklibname magick %{major}
 %define fversion	6.3.2
 %define rev 		9
-%define rel 		8
+%define rel 		9
 %define qlev		Q16
 
 %define dversion	%{fversion}-%{rev}
@@ -51,6 +51,9 @@ Source12:	magick-icon_48x48.png
 Source13:	magick-icon_64x64.png
 #
 Patch0:		ImageMagick-6.2.7-docdir.patch
+# http://svn.mandriva.com/cgi-bin/viewvc.cgi/packages/updates_releases/2007.1/ImageMagick/current/SOURCES/ImageMagick-6.3.2-CVE-2007-1667_1797.patch?view=log
+# http://qa.mandriva.com/show_bug.cgi?id=31911
+Patch1:         ImageMagick-6.3.2-CVE-2007-1667_1797.patch
 Patch4:		ImageMagick-6.0.1-includedir.patch
 Patch7:		ImageMagick-6.3.2-urw.patch
 Patch8:		ImageMagick-6.2.7-libname.patch
@@ -59,9 +62,13 @@ Patch18:	ImageMagick-6.1.7-windows-fontdir.patch
 Patch19:	ImageMagick-6.2.9-8-libpath.patch
 Patch20:	ImageMagick-6.2.5-fix-montageimages-test.patch
 Requires:	%{libname} = %{version}
-Requires:	ghostscript
+Requires:	ghostscript >= 8.60-55mdv2008.0
 Obsoletes:	ImageMagick < 6.3.2.9-6
 Provides:	ImageMagick = %{version}-%{release}
+# See http://qa.mandriva.com/show_bug.cgi?id=34054 for
+# the reason for this versioned buildrequires. It is used
+# during make check
+BuildRequires:  urw-fonts >= 2.0-19mdv2008.0 
 BuildRequires:	ghostscript
 BuildRequires:	bzip2-devel
 BuildRequires:	freetype2-devel >= 2.1.7
@@ -195,6 +202,7 @@ This package contains HTML/PDF documentation of %{name}.
 
 %setup -q -n %{Name}-%{fversion}
 %patch0 -p1 -b .docdir
+%patch1 -p0 -b .CVE-2007-1667_1797
 %patch4 -p1 -b .include
 %patch7 -p1 -b .urw
 %patch8 -p1 -b .libname
@@ -207,7 +215,6 @@ This package contains HTML/PDF documentation of %{name}.
 aclocal-1.8 -I m4
 WANT_AUTOCONF_2_5=1 autoconf
 automake-1.8
-
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
 
