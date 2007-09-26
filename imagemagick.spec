@@ -16,7 +16,7 @@
 %define libname		%mklibname magick %{major}
 %define fversion	6.3.2
 %define rev 		9
-%define rel 		9
+%define rel 		10
 %define qlev		Q16
 
 %define dversion	%{fversion}-%{rev}
