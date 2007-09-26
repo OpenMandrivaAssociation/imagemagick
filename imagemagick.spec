@@ -86,7 +86,7 @@ BuildRequires:	libexif-devel
 BuildRequires:	libjbig-devel
 BuildRequires:	lcms-devel >= 1.15
 BuildRequires:	tiff-devel
-BuildRequires:	libdjvulibre-devel
+BuildRequires:	djvulibre-devel
 BuildRequires:	libwmf-devel
 BuildRequires:	libxml2-devel
 BuildRequires:	XFree86-devel
