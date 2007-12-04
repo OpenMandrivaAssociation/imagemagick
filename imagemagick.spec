@@ -89,7 +89,7 @@ BuildRequires:	tiff-devel
 BuildRequires:	djvulibre-devel
 BuildRequires:	libwmf-devel
 BuildRequires:	libxml2-devel
-BuildRequires:	XFree86-devel
+BuildRequires:	X11-devel
 BuildRequires:	perl-devel
 # (oe) P19 should take care of the linking against old libs
 # problem, at least for the perl-Image-Magick package
