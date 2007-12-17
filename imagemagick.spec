@@ -102,7 +102,6 @@ BuildRequires:	chrpath
 %if %mdkversion >= 1020
 BuildRequires:	multiarch-utils >= 1.0.3
 %endif
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %description
 ImageMagick is a powerful image display, conversion and manipulation tool. It
