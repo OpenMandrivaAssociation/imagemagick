@@ -1,125 +1,95 @@
-%define build_plf 0
-%{?_with_plf: %global build_plf 1}
+# V E R S I O N   P A R T S
 
-%define build_modules 0
-%{?_with_modules: %global build_modules 1}
+# their "official" version
+%define rversion 6.3.7
 
-%define enable_jasper	1
-%{?_with_jasper: %global enable_jasper 1}
+# their "minor" version
+%define minor_rev 8
 
-%define enable_graphwiz	0
-%{?_with_graphwiz: %global enable_graphwiz 1}
+# some other funny version
+%define qlev Q16
 
-%define Name		ImageMagick
+# the full file version
+%define dversion %{rversion}-%{minor_rev}
 
-%define major		10.7.0
-%define libname		%mklibname magick %{major}
-%define fversion	6.3.2
-%define rev 		9
-%define rel 		10
-%define qlev		Q16
+# their "major" changes with every release it seems
+%define major 10.9.0
 
-%define dversion	%{fversion}-%{rev}
-
-# enablefpx = 0 (don't use libfpx)
-# enablefpx = 1 (use libfpx)
-%define enablefpx	0
-
-%if %build_plf
-# fpx build is broken, tests fail
-%define enablefpx	0
-%define distsuffix plf
-%endif
+# S T A N D A R D   M A N D R I V A   S T U F F
+%define libname %mklibname magick %{major}
+%define develname %mklibname magick -d
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-%if %rev > 0
-Version:	%{fversion}.%{rev}
-%else
-Version:	%{fversion}
-%endif
-Release:	%mkrel %rel
+Version:	%{rversion}
+Release:	%mkrel 1
 License:	BSD style
 Group:		Graphics
 URL:		http://www.imagemagick.org/
-Source0:	ftp://ftp.sunet.se/pub/multimedia/graphics/ImageMagick/ImageMagick-%{dversion}.tar.bz2
+Source0:	ftp://ftp.sunet.se/pub/multimedia/graphics/ImageMagick/ImageMagick-%{dversion}.tar.gz
 Source1:	ImageMagick.pdf.bz2
 # re-scaled from ftp://ftp.imagemagick.org/pub/ImageMagick/images/magick-icon.png
 Source10:	magick-icon_16x16.png
 Source11:	magick-icon_32x32.png
 Source12:	magick-icon_48x48.png
 Source13:	magick-icon_64x64.png
-#
-Patch0:		ImageMagick-6.2.7-docdir.patch
-# http://svn.mandriva.com/cgi-bin/viewvc.cgi/packages/updates_releases/2007.1/ImageMagick/current/SOURCES/ImageMagick-6.3.2-CVE-2007-1667_1797.patch?view=log
-# http://qa.mandriva.com/show_bug.cgi?id=31911
-Patch1:         ImageMagick-6.3.2-CVE-2007-1667_1797.patch
+Patch0:		imagemagick-docdir.diff
 Patch4:		ImageMagick-6.0.1-includedir.patch
-Patch7:		ImageMagick-6.3.2-urw.patch
-Patch8:		ImageMagick-6.2.7-libname.patch
-Patch17:	ImageMagick-6.3.2-fpx.patch
-Patch18:	ImageMagick-6.1.7-windows-fontdir.patch
-Patch19:	ImageMagick-6.2.9-8-libpath.patch
+Patch7:		imagemagick-urw.diff
+Patch8:		ImageMagick-libname.diff
+Patch17:	imagemagick-fpx.diff
+Patch19:	ImageMagick-libpath.diff
 Patch20:	ImageMagick-6.2.5-fix-montageimages-test.patch
 Requires:	%{libname} = %{version}
-Requires:	ghostscript >= 8.60-55mdv2008.0
+Requires:	ghostscript
+Requires:	graphviz
+Requires:	html2ps
 Obsoletes:	ImageMagick < 6.3.2.9-6
 Provides:	ImageMagick = %{version}-%{release}
-# See http://qa.mandriva.com/show_bug.cgi?id=34054 for
-# the reason for this versioned buildrequires. It is used
-# during make check
-BuildRequires:  urw-fonts >= 2.0-19mdv2008.0 
-BuildRequires:	ghostscript
-BuildRequires:	bzip2-devel
-BuildRequires:	freetype2-devel >= 2.1.7
-%if %{enablefpx}
-BuildRequires:	libfpx-devel
-%endif
-%if %{enable_jasper}
-BuildRequires:	libjasper-devel
-%endif
-%if %{enable_graphwiz}
-Requires:	graphviz
-BuildRequires:	libgraphviz-devel >= 2.9.0
-%endif
-BuildRequires:	libexif-devel
-BuildRequires:	libjbig-devel
-BuildRequires:	lcms-devel >= 1.15
-BuildRequires:	tiff-devel
-BuildRequires:	djvulibre-devel
-BuildRequires:	libwmf-devel
-BuildRequires:	libxml2-devel
-BuildRequires:	X11-devel
-BuildRequires:	perl-devel
-# (oe) P19 should take care of the linking against old libs
-# problem, at least for the perl-Image-Magick package
-#BuildConflicts:	libMagick-devel < %{version}
+BuildRequires:	XFree86-devel
 BuildRequires:	autoconf2.5
 BuildRequires:	automake1.8
-BuildRequires:	libltdl-devel >= 1.4.3-10mdk
-BuildRequires:	libgd-devel
+BuildRequires:	avahi-client-devel
+BuildRequires:	avahi-common-devel
+BuildRequires:	avahi-glib-devel
+BuildRequires:	bzip2-devel
+BuildRequires:	cairo-devel
 BuildRequires:	chrpath
-%if %mdkversion >= 1020
-BuildRequires:	multiarch-utils >= 1.0.3
-%endif
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
+BuildRequires:	dbus-glib-devel
+BuildRequires:	djvulibre-devel
+BuildRequires:	expat-devel
+BuildRequires:	fontconfig-devel
+BuildRequires:	freetype2-devel >= 2.1.7
+BuildRequires:	gd-devel
+BuildRequires:	ghostscript
+BuildRequires:	glib2-devel
+BuildRequires:	gnome-vfs2-devel
+BuildRequires:	graphviz-devel >= 2.9.0
+BuildRequires:	lcms-devel >= 1.15
+BuildRequires:	libGConf2-devel
+BuildRequires:	libcroco0.6-devel
+BuildRequires:	libexif-devel
+BuildRequires:	libgdk_pixbuf2.0-devel
+BuildRequires:	libgsf-devel
+BuildRequires:	libjasper-devel
+BuildRequires:	libjbig-devel
+BuildRequires:	libltdl-devel >= 1.4.3-10
+BuildRequires:	librsvg-devel
+BuildRequires:	libwmf
+BuildRequires:	libwmf-devel
+BuildRequires:	libxml2-devel
+BuildRequires:	openssl-devel
+BuildRequires:	pango-devel
+BuildRequires:	perl-devel
+BuildRequires:	pixman-devel
+BuildRequires:	tiff-devel
+BuildConflicts:	%{name}-devel
+Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 ImageMagick is a powerful image display, conversion and manipulation tool. It
 runs in an X session. With this tool, you can view, edit and display a variety
 of image formats.
-
-Build Options:
---with plf		Build for PLF (fpx support)
---with modules		Compile all supported image types as modules
---with jasper		Enable JPEG2000 support (enabled)
---with graphviz		Enable Graphviz support (enabled)
-
-%if %build_plf
-This package is in PLF because it provides additional support for:
-- libfpx
-which is covered by software patents.
-%endif
 
 %package 	desktop
 Summary:	ImageMagick menus
@@ -134,61 +104,49 @@ command from the menu.
 %package -n	%{libname}
 Summary:	ImageMagick libraries
 Group:		System/Libraries
-Obsoletes:	ImageMagick-lib	libMagick5
-Obsoletes:	%mklibname Magick %{major}
-Provides:	ImageMagick-lib = %{version}-%{release}
-Provides:	libMagick5 = %{version}-%{release}
 
 %description -n	%{libname}
-This package contains the libraries needed to run programs dynamically
-linked with ImageMagick libraries.
+This package contains the libraries needed to run programs dynamically linked
+with ImageMagick libraries.
 
-%package -n	%{libname}-devel
+%package -n	%{develname}
 Summary:	Static libraries and header files for ImageMagick app development
 Group:		Development/C
-Obsoletes:	%{Name}-devel
-Obsoletes:	libMagick5-devel
-Obsoletes:	%mklibname Magick %{major} -d
+Requires:	%{libname} = %{version}
 Provides:	%{name}-devel = %{version}-%{release}
-Provides:	%{Name}-devel = %{version}-%{release}
+Provides:	ImageMagick-devel = %{version}-%{release}
 Provides:	libmagick-devel = %{version}-%{release}
 Provides:	libMagick-devel = %{version}-%{release}
+Obsoletes:	ImageMagick-devel
 Provides:	libMagick5-devel = %{version}-%{release}
-Requires:	%{libname} = %{version}
-Requires:	libjbig-devel
-%if %{enable_jasper}
-Requires:	libjasper-devel
-%endif
-%if %{enablefpx}
-Requires:	libfpx-devel
-%endif
-%if %{enable_graphwiz}
-Requires:	libgraphviz-devel
-%define _requires_exceptions devel(libcdt)\\|devel(libcircogen)\\|devel(libcommon)\\|devel(libdotgen)\\|devel(libdotneato)\\|devel(libfdpgen)\\|devel(libgraph)\\|devel(libgvrender)\\|devel(libneatogen)\\|devel(libpack)\\|devel(libpathplan)\\|devel(libtwopigen)\\|devel(libgvc)\\|devel(libgvgd)
-%endif
+Obsoletes:	libMagick5-devel
+# 2006
+Obsoletes:	%{mklibname Magick 8.3.2 -d}
+# 2007.0
+Obsoletes:	%{mklibname magick 10.4.0 -d} %{mklibname Magick 10.4.0 -d}
+# 2007.1/2008.0
+Obsoletes:	%{mklibname magick 10.7.0 -d} %{mklibname Magick 10.7.0 -d}
 
-%description -n	%{libname}-devel
-If you want to create applications that will use ImageMagick code or
-APIs, you'll need to install these packages as well as
-ImageMagick. These additional packages aren't necessary if you simply
-want to use ImageMagick, however.
+%description -n	%{develname}
+If you want to create applications that will use ImageMagick code or APIs,
+you'll need to install these packages as well as ImageMagick. These additional
+packages aren't necessary if you simply want to use ImageMagick, however.
 
-ImageMagick-devel is an addition to ImageMagick which includes static
-libraries and header files necessary to develop applications.
+ImageMagick-devel is an addition to ImageMagick which includes static libraries
+and header files necessary to develop applications.
 
 %package -n	perl-Image-Magick
 Summary:	Libraries and modules for access to ImageMagick from perl
 Group:		Development/Perl
 Requires:	%{name} = %{version}
+Provides:	perl-Magick = %{version}-%{release}
 Obsoletes:	perl-Magick
-Provides:	perl-Magick
-%if %{enable_graphwiz}
 Requires:	graphviz
-%endif
+Requires:	libwmf
 
 %description -n	perl-Image-Magick
-This is the ImageMagick perl support package. It includes perl modules 
-and support files for access to ImageMagick library from perl.
+This is the ImageMagick perl support package. It includes perl modules and
+support files for access to ImageMagick library from perl.
 
 %package	doc
 Summary:	%{name} Documentation
@@ -200,26 +158,36 @@ This package contains HTML/PDF documentation of %{name}.
 
 %prep
 
-%setup -q -n %{Name}-%{fversion}
-%patch0 -p1 -b .docdir
-%patch1 -p0 -b .CVE-2007-1667_1797
+%setup -q -n ImageMagick-%{rversion}
+
+# major check
+LIBRARY_CURRENT=`grep "^LIBRARY_CURRENT=" version.sh | cut -d= -f2`
+LIBRARY_REVISION=`grep "^LIBRARY_REVISION=" version.sh | cut -d= -f2`
+LIBRARY_AGE=`grep "^LIBRARY_AGE=" version.sh | cut -d= -f2`
+real_major="`echo ${LIBRARY_CURRENT}.${LIBRARY_REVISION}.${LIBRARY_AGE} | perl -pi -e 's|\.||g'`"
+package_major="`echo %{major} | perl -pi -e 's|\.||g'`"
+
+if [ "${package_major}" -ne "${real_major}" ]; then
+    echo "%{major} is not ${LIBRARY_CURRENT}.${LIBRARY_REVISION}.${LIBRARY_AGE}"
+    exit 1
+fi
+
+%patch0 -p0 -b .docdir
 %patch4 -p1 -b .include
-%patch7 -p1 -b .urw
+%patch7 -p0 -b .urw
 %patch8 -p1 -b .libname
-%patch17 -p1 -b .fpx
-%patch18 -p1 -b .windows
+%patch17 -p0 -b .fpx
 %patch19 -p1 -b .libpath
 %patch20 -p1 -b .ppc
 
-%__libtoolize --copy --force
-aclocal-1.8 -I m4
-WANT_AUTOCONF_2_5=1 autoconf
-automake-1.8
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
 
 %build
-#define __libtoolize /bin/true
+export WANT_AUTOCONF_2_5=1
+rm -f configure
+#libtoolize --copy --force; aclocal -I m4; autoconf; automake
+aclocal -I m4; autoconf; automake
 
 export CFLAGS="$CFLAGS -fno-strict-aliasing -fPIC"
 export CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -fPIC"
@@ -228,30 +196,24 @@ export CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -fPIC"
 export PATH=/bin:/usr/bin:/usr/X11R6/bin
 
 %configure2_5x \
+    --with-pic \
+    --enable-shared \
     --enable-fast-install \
     --disable-ltdl-install \
+    --with-threads \
+    --with-magick_plus_plus \
+    --with-gslib \
+    --with-wmf \
+    --with-lcms \
+    --with-rsvg \
+    --with-xml \
     --without-dps \
-%if %build_modules
+    --without-windows-font-dir \
     --with-modules \
-%else
-    --without-modules \
-%endif
-    --enable-shared \
-    --with-pic \
+    --with-perl \
     --with-perl-options="INSTALLDIRS=vendor" \
-%if %{enablefpx}
-    --with-fpx=yes \
-%endif
-%if %{enable_jasper}
     --with-jp2 \
-%else
-    --without-jp2 \
-%endif
-%if %{enable_graphwiz}
     --with-dot \
-%else
-    --without-dot \
-%endif
 
 # without the following, it doesn't build correctly with "make -j 4"
 perl -lpi -e '$_ .= " magick/libMagick.la" if index($_, q($(PERLMAKEFILE))) == 0' Makefile
@@ -275,20 +237,20 @@ make check
 rm -rf %{buildroot}
 
 # (Abel) set LD_RUN_PATH to null, to avoid adding rpath to perlmagick module
-%makeinstall_std LD_RUN_PATH="" pkgdocdir=%{_datadir}/doc/%{name}-doc-%{fversion}
+%makeinstall_std LD_RUN_PATH="" pkgdocdir=/installed_docs
+
+# fix docs inclusion (fix an unknown new rpm bug)
+rm -rf installed_docs; mv %{buildroot}/installed_docs .
 
 # Remove unpackaged files
-rm -f %{buildroot}%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/coders/*.a \
-      %{buildroot}%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/filters/*.a \
+rm -f %{buildroot}%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.a \
+      %{buildroot}%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/filters/*.a \
       %{buildroot}%{_libdir}/libltdl* 
 
-%if %mdkversion >= 1020
 %multiarch_binaries %{buildroot}%{_bindir}/Magick-config
 %multiarch_binaries %{buildroot}%{_bindir}/Magick++-config
 %multiarch_binaries %{buildroot}%{_bindir}/Wand-config
 %multiarch_includes %{buildroot}%{_includedir}/magick/magick-config.h
-%multiarch_includes %{buildroot}%{_includedir}/wand/wand-config.h
-%endif
 
 # nuke rpath
 chrpath -d %{buildroot}%{perl_vendorarch}/auto/Image/Magick/Magick.so
@@ -305,22 +267,23 @@ install -m 644 magick-icon_64x64.png %{buildroot}%{_iconsdir}/hicolor/64x64/apps
 
 install -m 755 -d %{buildroot}%{_menudir}
 cat > %{buildroot}%{_menudir}/%{name} <<EOF
-?package(ImageMagick): command="%{_bindir}/display" \
-	needs="X11" \
-	icon="%{name}.png" \
-	section="Office/Graphics" \
-	title="ImageMagick Viewer" \
-	terminal="true" \
+?package(ImageMagick): \
+command="%{_bindir}/display" \
+needs="X11" \
+icon="%{name}.png" \
+section="Office/Graphics" \
+title="ImageMagick Viewer" \
+terminal="true" \
 %if %{mdkversion} >= 200610
-	xdg=true \
+xdg=true \
 %endif
-	longtitle="Views Graphics files"
+longtitle="Views Graphics files"
 EOF
 
 install -m 755 -d %{buildroot}%{_datadir}/applications/
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
 [Desktop Entry]
-Name=%{Name}
+Name=ImageMagick
 Comment=Views Graphics files
 Exec=%{_bindir}/xterm -geometry 40x15 -title ImageMagick +sb -iconic -e %{_bindir}/display
 Icon=%{name}
@@ -328,10 +291,6 @@ Terminal=false
 Type=Application
 Categories=X-MandrivaLinux-Office-Graphs;Graphics;Viewer;
 EOF
-
-
-%clean
-rm -rf %{buildroot}
 
 %post desktop
 %update_menus
@@ -342,6 +301,9 @@ rm -rf %{buildroot}
 %post -n %{libname} -p /sbin/ldconfig
 
 %postun -n %{libname} -p /sbin/ldconfig
+
+%clean
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
@@ -357,17 +319,15 @@ rm -rf %{buildroot}
 %{_bindir}/mogrify
 %{_bindir}/montage
 %{_bindir}/stream
-%dir %{_libdir}/%{Name}-%{fversion}
-%dir %{_libdir}/%{Name}-%{fversion}/modules-%{qlev}
-%dir %{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/coders
-%dir %{_libdir}/%{Name}-%{fversion}/config
-%{_datadir}/%{Name}-%{fversion}
-%{_libdir}/%{Name}-%{fversion}/config/*.xml
-%if %build_modules
-%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/filters
-%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/coders/*.so
-%{_libdir}/%{Name}-%{fversion}/modules-%{qlev}/coders/*.la
-%endif
+%dir %{_libdir}/ImageMagick-%{rversion}
+%dir %{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}
+%dir %{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders
+%dir %{_libdir}/ImageMagick-%{rversion}/config
+%{_datadir}/ImageMagick-%{rversion}
+%{_libdir}/ImageMagick-%{rversion}/config/*.xml
+%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/filters
+%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.so
+%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.la
 %{_mandir}/man1/*
 %{_mandir}/man3/*
 %exclude %{_mandir}/man3/*::*.3pm*
@@ -387,17 +347,12 @@ rm -rf %{buildroot}
 %{_libdir}/libMagick-%{major}.so.0*
 %{_libdir}/libWand-%{major}.so.0*
 
-%files -n %{libname}-devel
+%files -n %{develname}
 %defattr(-,root,root)
-%doc ChangeLog
-%if %mdkversion >= 1020
 %multiarch %{multiarch_bindir}/Magick-config
 %multiarch %{multiarch_bindir}/Magick++-config
 %multiarch %{multiarch_bindir}/Wand-config
 %multiarch %{multiarch_includedir}/magick/magick-config.h
-%multiarch %{multiarch_includedir}/wand/wand-config.h
-
-%endif
 %{_bindir}/Magick-config
 %{_bindir}/Magick++-config
 %{_bindir}/Wand-config
@@ -409,17 +364,11 @@ rm -rf %{buildroot}
 
 %files -n perl-Image-Magick
 %defattr(-,root,root)
-%{_mandir}/man3*/*::*.3pm*
 %{perl_vendorarch}/Image
 %{perl_vendorarch}/auto/Image
+%{_mandir}/man3*/*::*.3pm*
 
 %files doc
 %defattr(-,root,root)
-%doc ImageMagick.pdf ChangeLog LICENSE NEWS
-%doc NOTICE QuickStart.txt
-#doc www/ images/ index.html
-# gw maybe we should the doc location in configure instead
-%doc %_datadir/doc/%name-doc-%fversion/
-
-
-
+%doc ImageMagick.pdf ChangeLog LICENSE NEWS NOTICE
+%doc QuickStart.txt installed_docs/*
