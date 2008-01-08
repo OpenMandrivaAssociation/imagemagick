@@ -22,7 +22,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	BSD style
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -209,7 +209,7 @@ export PATH=/bin:/usr/bin:/usr/X11R6/bin
     --with-xml \
     --without-dps \
     --without-windows-font-dir \
-    --with-modules \
+    --without-modules \
     --with-perl \
     --with-perl-options="INSTALLDIRS=vendor" \
     --with-jp2 \
