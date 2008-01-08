@@ -325,9 +325,9 @@ rm -rf %{buildroot}
 %dir %{_libdir}/ImageMagick-%{rversion}/config
 %{_datadir}/ImageMagick-%{rversion}
 %{_libdir}/ImageMagick-%{rversion}/config/*.xml
-%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/filters
-%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.so
-%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.la
+#%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/filters
+#%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.so
+#%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.la
 %{_mandir}/man1/*
 %{_mandir}/man3/*
 %exclude %{_mandir}/man3/*::*.3pm*
