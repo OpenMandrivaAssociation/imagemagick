@@ -265,20 +265,6 @@ install -m 644 magick-icon_32x32.png %{buildroot}%{_iconsdir}/%{name}.png
 install -m 644 magick-icon_48x48.png %{buildroot}%{_liconsdir}/%{name}.png
 install -m 644 magick-icon_64x64.png %{buildroot}%{_iconsdir}/hicolor/64x64/apps/%{name}.png
 
-install -m 755 -d %{buildroot}%{_menudir}
-cat > %{buildroot}%{_menudir}/%{name} <<EOF
-?package(ImageMagick): \
-command="%{_bindir}/display" \
-needs="X11" \
-icon="%{name}.png" \
-section="Office/Graphics" \
-title="ImageMagick Viewer" \
-terminal="true" \
-%if %{mdkversion} >= 200610
-xdg=true \
-%endif
-longtitle="Views Graphics files"
-EOF
 
 install -m 755 -d %{buildroot}%{_datadir}/applications/
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
@@ -334,7 +320,6 @@ rm -rf %{buildroot}
 
 %files desktop
 %defattr(-,root,root)
-%{_menudir}/%{name}
 %{_datadir}/applications/*
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
