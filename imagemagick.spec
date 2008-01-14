@@ -22,7 +22,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	BSD style
 Group:		Graphics
 URL:		http://www.imagemagick.org/
