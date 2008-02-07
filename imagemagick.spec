@@ -1,10 +1,10 @@
 # V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.3.7
+%define rversion 6.3.8
 
 # their "minor" version
-%define minor_rev 9
+%define minor_rev 3
 
 # some other funny version
 %define qlev Q16
@@ -13,7 +13,7 @@
 %define dversion %{rversion}-%{minor_rev}
 
 # their "major" changes with every release it seems
-%define major 10.9.0
+%define major 10.10.0
 
 # S T A N D A R D   M A N D R I V A   S T U F F
 %define libname %mklibname magick %{major}
@@ -22,7 +22,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}
-Release:	%mkrel 3
+Release:	%mkrel 1
 License:	BSD style
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -36,7 +36,6 @@ Source13:	magick-icon_64x64.png
 Patch0:		imagemagick-docdir.diff
 Patch4:		ImageMagick-6.0.1-includedir.patch
 Patch7:		imagemagick-urw.diff
-Patch8:		ImageMagick-libname.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
 Patch20:	ImageMagick-6.2.5-fix-montageimages-test.patch
@@ -78,6 +77,7 @@ BuildRequires:	librsvg-devel
 BuildRequires:	libwmf
 BuildRequires:	libwmf-devel
 BuildRequires:	libxml2-devel
+BuildRequires:	lqr-devel
 BuildRequires:	openssl-devel
 BuildRequires:	pango-devel
 BuildRequires:	perl-devel
@@ -126,6 +126,8 @@ Obsoletes:	%{mklibname Magick 8.3.2 -d}
 Obsoletes:	%{mklibname magick 10.4.0 -d} %{mklibname Magick 10.4.0 -d}
 # 2007.1/2008.0
 Obsoletes:	%{mklibname magick 10.7.0 -d} %{mklibname Magick 10.7.0 -d}
+# pre 2008.1
+Obsoletes:	%{mklibname magick 10.9.0 -d} %{mklibname Magick 10.9.0 -d}
 
 %description -n	%{develname}
 If you want to create applications that will use ImageMagick code or APIs,
@@ -175,7 +177,6 @@ fi
 %patch0 -p0 -b .docdir
 %patch4 -p1 -b .include
 %patch7 -p0 -b .urw
-%patch8 -p1 -b .libname
 %patch17 -p0 -b .fpx
 %patch19 -p1 -b .libpath
 %patch20 -p1 -b .ppc
@@ -189,8 +190,8 @@ rm -f configure
 #libtoolize --copy --force; aclocal -I m4; autoconf; automake
 aclocal -I m4; autoconf; automake
 
-export CFLAGS="$CFLAGS -fno-strict-aliasing -fPIC"
-export CXXFLAGS="$CXXFLAGS -fno-strict-aliasing -fPIC"
+export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
+export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 
 # don't use icecream
 export PATH=/bin:/usr/bin:/usr/X11R6/bin
@@ -214,6 +215,7 @@ export PATH=/bin:/usr/bin:/usr/X11R6/bin
     --with-perl-options="INSTALLDIRS=vendor" \
     --with-jp2 \
     --with-dot \
+    --with-lqr
 
 # without the following, it doesn't build correctly with "make -j 4"
 perl -lpi -e '$_ .= " magick/libMagick.la" if index($_, q($(PERLMAKEFILE))) == 0' Makefile
@@ -328,9 +330,9 @@ rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root,755)
-%{_libdir}/libMagick++-%{major}.so.0*
-%{_libdir}/libMagick-%{major}.so.0*
-%{_libdir}/libWand-%{major}.so.0*
+%{_libdir}/libMagick++.so.*
+%{_libdir}/libMagick.so.*
+%{_libdir}/libWand.so.*
 
 %files -n %{develname}
 %defattr(-,root,root)
