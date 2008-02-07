@@ -83,6 +83,7 @@ BuildRequires:	pango-devel
 BuildRequires:	perl-devel
 BuildRequires:	pixman-devel
 BuildRequires:	tiff-devel
+BuildRequires:	umem-devel
 BuildConflicts:	%{name}-devel
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -215,7 +216,8 @@ export PATH=/bin:/usr/bin:/usr/X11R6/bin
     --with-perl-options="INSTALLDIRS=vendor" \
     --with-jp2 \
     --with-dot \
-    --with-lqr
+    --with-lqr \
+    --with-umem
 
 # without the following, it doesn't build correctly with "make -j 4"
 perl -lpi -e '$_ .= " magick/libMagick.la" if index($_, q($(PERLMAKEFILE))) == 0' Makefile
