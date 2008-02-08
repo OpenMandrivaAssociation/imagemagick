@@ -344,10 +344,10 @@ rm -rf %{buildroot}
 %{_includedir}/ImageMagick/Magick++/*.h
 %{_includedir}/ImageMagick/wand/*.h
 %{_includedir}/ImageMagick/*.h
-%multiarch %{_bindir}/MagickCore-config
-%multiarch %{_bindir}/MagickWand-config
 %multiarch %{multiarch_bindir}/Magick-config
 %multiarch %{multiarch_bindir}/Magick++-config
+%multiarch %{multiarch_bindir}/MagickCore-config
+%multiarch %{multiarch_bindir}/MagickWand-config
 %multiarch %{multiarch_bindir}/Wand-config
 %multiarch %{multiarch_includedir}/ImageMagick/magick/magick-config.h
 %{_bindir}/Magick-config
