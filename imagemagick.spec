@@ -220,7 +220,7 @@ export PATH=/bin:/usr/bin:/usr/X11R6/bin
 # without the following, it doesn't build correctly with "make -j 4"
 perl -lpi -e '$_ .= " magick/libMagick.la" if index($_, q($(PERLMAKEFILE))) == 0' Makefile
 
-%make
+make
 
 %check
 # these tests require X
