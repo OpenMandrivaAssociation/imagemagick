@@ -4,7 +4,7 @@
 %define rversion 6.3.8
 
 # their "minor" version
-%define minor_rev 3
+%define minor_rev 5
 
 # some other funny version
 %define qlev Q16
@@ -13,7 +13,7 @@
 %define dversion %{rversion}-%{minor_rev}
 
 # their "major" changes with every release it seems
-%define major 10.10.0
+%define major 1.0.0
 
 # S T A N D A R D   M A N D R I V A   S T U F F
 %define libname %mklibname magick %{major}
@@ -22,11 +22,11 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}
-Release:	%mkrel 2
+Release:	%mkrel 1
 License:	BSD style
 Group:		Graphics
 URL:		http://www.imagemagick.org/
-Source0:	ftp://ftp.sunet.se/pub/multimedia/graphics/ImageMagick/ImageMagick-%{dversion}.tar.gz
+Source0:	ftp://gd.tuwien.ac.at/pub/graphics/ImageMagick/ImageMagick-%{dversion}.tar.lzma
 Source1:	ImageMagick.pdf.bz2
 # re-scaled from ftp://ftp.imagemagick.org/pub/ImageMagick/images/magick-icon.png
 Source10:	magick-icon_16x16.png
@@ -218,22 +218,20 @@ export PATH=/bin:/usr/bin:/usr/X11R6/bin
     --with-lqr
 
 # without the following, it doesn't build correctly with "make -j 4"
-perl -lpi -e '$_ .= " magick/libMagick.la" if index($_, q($(PERLMAKEFILE))) == 0' Makefile
+perl -lpi -e '$_ .= " magick/libMagickCore.la" if index($_, q($(PERLMAKEFILE))) == 0' Makefile
 
-make
+%make
 
 %check
 # these tests require X
-if [ -f PerlMagick/t/x/read.t ]; then
-	mv PerlMagick/t/x/read.t PerlMagick/t/x/read.t.disabled
+if [ -f PerlMagick/t/x11/read.t ]; then
+	mv PerlMagick/t/x11/read.t PerlMagick/t/x11/read.t.disabled
 fi
-if [ -f PerlMagick/t/x/write.t ]; then
-	mv PerlMagick/t/x/write.t PerlMagick/t/x/write.t.disabled
+if [ -f PerlMagick/t/x11/write.t ]; then
+	mv PerlMagick/t/x11/write.t PerlMagick/t/x11/write.t.disabled
 fi
-#dlname=`grep "^dlname" Magick++/lib/.libs/libMagick++.la | cut -d\' -f2`
-#LD_PRELOAD="$PWD/Magick++/lib/.libs/$dlname" VERBOSE="1" make check
-
-make check
+dlname=`grep "^dlname" Magick++/lib/.libs/libMagick++.la | cut -d\' -f2`
+LD_PRELOAD="$PWD/Magick++/lib/.libs/$dlname" VERBOSE="1" make check
 
 %install
 rm -rf %{buildroot}
@@ -251,8 +249,10 @@ rm -f %{buildroot}%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.a 
 
 %multiarch_binaries %{buildroot}%{_bindir}/Magick-config
 %multiarch_binaries %{buildroot}%{_bindir}/Magick++-config
+%multiarch_binaries %{buildroot}%{_bindir}/MagickCore-config
+%multiarch_binaries %{buildroot}%{_bindir}/MagickWand-config
 %multiarch_binaries %{buildroot}%{_bindir}/Wand-config
-%multiarch_includes %{buildroot}%{_includedir}/magick/magick-config.h
+%multiarch_includes %{buildroot}%{_includedir}/ImageMagick/magick/magick-config.h
 
 # nuke rpath
 chrpath -d %{buildroot}%{perl_vendorarch}/auto/Image/Magick/Magick.so
@@ -329,24 +329,35 @@ rm -rf %{buildroot}
 %{_iconsdir}/hicolor/64x64/apps/%{name}.png
 
 %files -n %{libname}
-%defattr(-,root,root,755)
+%defattr(-,root,root,0755)
 %{_libdir}/libMagick++.so.*
-%{_libdir}/libMagick.so.*
-%{_libdir}/libWand.so.*
+%{_libdir}/libMagickCore.so.*
+%{_libdir}/libMagickWand.so.*
 
 %files -n %{develname}
 %defattr(-,root,root)
+%dir %{_includedir}/ImageMagick
+%dir %{_includedir}/ImageMagick/magick
+%dir %{_includedir}/ImageMagick/Magick++
+%dir %{_includedir}/ImageMagick/wand
+%{_includedir}/ImageMagick/magick/*.h
+%{_includedir}/ImageMagick/Magick++/*.h
+%{_includedir}/ImageMagick/wand/*.h
+%{_includedir}/ImageMagick/*.h
+%multiarch %{_bindir}/MagickCore-config
+%multiarch %{_bindir}/MagickWand-config
 %multiarch %{multiarch_bindir}/Magick-config
 %multiarch %{multiarch_bindir}/Magick++-config
 %multiarch %{multiarch_bindir}/Wand-config
-%multiarch %{multiarch_includedir}/magick/magick-config.h
+%multiarch %{multiarch_includedir}/ImageMagick/magick/magick-config.h
 %{_bindir}/Magick-config
 %{_bindir}/Magick++-config
+%{_bindir}/MagickCore-config
+%{_bindir}/MagickWand-config
 %{_bindir}/Wand-config
-%{_libdir}/*.a
-%attr(644,root,root) %{_libdir}/*.la
+%attr(0644,root,root) %{_libdir}/*.a
+%attr(0644,root,root) %{_libdir}/*.la
 %{_libdir}/*.so
-%{_includedir}/*
 %{_libdir}/pkgconfig/*.pc
 
 %files -n perl-Image-Magick
