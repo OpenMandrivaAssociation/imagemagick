@@ -12,8 +12,7 @@
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
-# their "major" changes with every release it seems
-%define major 1.0.0
+%define major 1
 
 # S T A N D A R D   M A N D R I V A   S T U F F
 %define libname %mklibname magick %{major}
@@ -22,7 +21,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	BSD style
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -104,6 +103,8 @@ command from the menu.
 %package -n	%{libname}
 Summary:	ImageMagick libraries
 Group:		System/Libraries
+# (Anssi 02/2008): Wrongly named at first, can be removed when major changes again:
+Obsoletes:	%{_lib}magick%{major}.0.0 < %{version}-%{release}
 
 %description -n	%{libname}
 This package contains the libraries needed to run programs dynamically linked
@@ -330,25 +331,20 @@ rm -rf %{buildroot}
 
 %files -n %{libname}
 %defattr(-,root,root,0755)
-%{_libdir}/libMagick++.so.*
-%{_libdir}/libMagickCore.so.*
-%{_libdir}/libMagickWand.so.*
+%{_libdir}/libMagick++.so.%{major}*
+%{_libdir}/libMagickCore.so.%{major}*
+%{_libdir}/libMagickWand.so.%{major}*
 
 %files -n %{develname}
 %defattr(-,root,root)
-%dir %{_includedir}/ImageMagick
-%dir %{_includedir}/ImageMagick/magick
-%dir %{_includedir}/ImageMagick/Magick++
-%dir %{_includedir}/ImageMagick/wand
-%{_includedir}/ImageMagick/magick/*.h
-%{_includedir}/ImageMagick/Magick++/*.h
-%{_includedir}/ImageMagick/wand/*.h
-%{_includedir}/ImageMagick/*.h
+%{_includedir}/ImageMagick
 %multiarch %{multiarch_bindir}/Magick-config
 %multiarch %{multiarch_bindir}/Magick++-config
 %multiarch %{multiarch_bindir}/MagickCore-config
 %multiarch %{multiarch_bindir}/MagickWand-config
 %multiarch %{multiarch_bindir}/Wand-config
+%multiarch %dir %{multiarch_includedir}/ImageMagick
+%multiarch %dir %{multiarch_includedir}/ImageMagick/magick
 %multiarch %{multiarch_includedir}/ImageMagick/magick/magick-config.h
 %{_bindir}/Magick-config
 %{_bindir}/Magick++-config
