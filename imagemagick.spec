@@ -163,18 +163,6 @@ This package contains HTML/PDF documentation of %{name}.
 
 %setup -q -n ImageMagick-%{rversion}
 
-# major check
-LIBRARY_CURRENT=`grep "^LIBRARY_CURRENT=" version.sh | cut -d= -f2`
-LIBRARY_REVISION=`grep "^LIBRARY_REVISION=" version.sh | cut -d= -f2`
-LIBRARY_AGE=`grep "^LIBRARY_AGE=" version.sh | cut -d= -f2`
-real_major="`echo ${LIBRARY_CURRENT}.${LIBRARY_REVISION}.${LIBRARY_AGE} | perl -pi -e 's|\.||g'`"
-package_major="`echo %{major} | perl -pi -e 's|\.||g'`"
-
-if [ "${package_major}" -ne "${real_major}" ]; then
-    echo "%{major} is not ${LIBRARY_CURRENT}.${LIBRARY_REVISION}.${LIBRARY_AGE}"
-    exit 1
-fi
-
 %patch0 -p0 -b .docdir
 %patch4 -p1 -b .include
 %patch7 -p0 -b .urw
