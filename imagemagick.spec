@@ -4,7 +4,7 @@
 %define rversion 6.3.8
 
 # their "minor" version
-%define minor_rev 5
+%define minor_rev 9
 
 # some other funny version
 %define qlev Q16
