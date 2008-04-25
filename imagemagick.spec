@@ -1,7 +1,11 @@
+%define build_test 1
+%{?_with_test: %{expand: %%global build_test 1}}
+%{?_without_test: %{expand: %%global build_test 0}}
+
 # V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.3.8
+%define rversion 6.4.0
 
 # their "minor" version
 %define minor_rev 9
@@ -21,7 +25,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 1
+Release:	%mkrel 0
 License:	BSD style
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -211,6 +215,7 @@ perl -lpi -e '$_ .= " magick/libMagickCore.la" if index($_, q($(PERLMAKEFILE))) 
 
 make
 
+%if %{build_test}
 %check
 # these tests require X
 if [ -f PerlMagick/t/x11/read.t ]; then
@@ -221,6 +226,7 @@ if [ -f PerlMagick/t/x11/write.t ]; then
 fi
 dlname=`grep "^dlname" Magick++/lib/.libs/libMagick++.la | cut -d\' -f2`
 LD_PRELOAD="$PWD/Magick++/lib/.libs/$dlname" VERBOSE="1" make check
+%endif
 
 %install
 rm -rf %{buildroot}
@@ -352,5 +358,5 @@ rm -rf %{buildroot}
 
 %files doc
 %defattr(-,root,root)
-%doc ImageMagick.pdf ChangeLog LICENSE NEWS NOTICE
+%doc ImageMagick.pdf ChangeLog LICENSE NEWS* NOTICE
 %doc QuickStart.txt installed_docs/*
