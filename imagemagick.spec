@@ -228,8 +228,9 @@ fi
 if [ -f PerlMagick/t/x11/write.t ]; then
 	mv PerlMagick/t/x11/write.t PerlMagick/t/x11/write.t.disabled
 fi
-dlname=`grep "^dlname" Magick++/lib/.libs/libMagick++.la | cut -d\' -f2`
-LD_PRELOAD="$PWD/Magick++/lib/.libs/$dlname" VERBOSE="1" make check
+#dlname=`grep "^dlname" Magick++/lib/.libs/libMagick++.la | cut -d\' -f2`
+#LD_PRELOAD="$PWD/Magick++/lib/.libs/$dlname" VERBOSE="1" make check
+make check
 %endif
 
 %install
