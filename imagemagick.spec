@@ -5,10 +5,10 @@
 # V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.4.0
+%define rversion 6.4.1
 
 # their "minor" version
-%define minor_rev 9
+%define minor_rev 1
 
 # some other funny version
 %define qlev Q16
@@ -25,7 +25,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 0
+Release:	%mkrel 1
 License:	BSD style
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -87,7 +87,7 @@ BuildRequires:	perl-devel
 BuildRequires:	pixman-devel
 BuildRequires:	tiff-devel
 BuildConflicts:	%{name}-devel
-Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 ImageMagick is a powerful image display, conversion and manipulation tool. It
@@ -205,13 +205,17 @@ export PATH=/bin:/usr/bin:/usr/X11R6/bin
     --without-windows-font-dir \
     --without-modules \
     --with-perl \
-    --with-perl-options="INSTALLDIRS=vendor" \
+    --with-perl-options="INSTALLDIRS=vendor CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='-shared -L$PWD/magick/.libs'" \
     --with-jp2 \
     --with-dot \
     --with-lqr
 
 # without the following, it doesn't build correctly with "make -j 4"
 perl -lpi -e '$_ .= " magick/libMagickCore.la" if index($_, q($(PERLMAKEFILE))) == 0' Makefile
+
+# Disable rpath
+sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 make
 
