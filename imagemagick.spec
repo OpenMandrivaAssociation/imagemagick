@@ -1,4 +1,4 @@
-%define build_test 1
+%define build_test 0
 %{?_with_test: %{expand: %%global build_test 1}}
 %{?_without_test: %{expand: %%global build_test 0}}
 
