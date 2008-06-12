@@ -280,11 +280,15 @@ Type=Application
 Categories=X-MandrivaLinux-Office-Graphs;Graphics;Viewer;
 EOF
 
+%if %mdkversion < 200900
 %post desktop
 %update_menus
+%endif
 
+%if %mdkversion < 200900
 %postun desktop
 %clean_menus
+%endif
 
 %if %mdkversion < 200900
 %post -n %{libname} -p /sbin/ldconfig
