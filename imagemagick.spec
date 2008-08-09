@@ -8,7 +8,7 @@
 %define rversion 6.4.2
 
 # their "minor" version
-%define minor_rev 4
+%define minor_rev 6
 
 # some other funny version
 %define qlev Q16
@@ -37,13 +37,15 @@ Source11:	magick-icon_32x32.png
 Source12:	magick-icon_48x48.png
 Source13:	magick-icon_64x64.png
 Patch0:		imagemagick-docdir.diff
-Patch1:		ImageMagick-djvulibre_fix.diff
 Patch4:		ImageMagick-6.0.1-includedir.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
 Patch20:	ImageMagick-6.2.5-fix-montageimages-test.patch
 Patch21:	ImageMagick-linkage_fix.diff
+# From upstream SVN (rev 11804): use ffmpeg not mpeg2decode to decode
+# MPEG files - AdamW 2008/08
+Patch22:	ImageMagick-6.4.2-mpeg2.patch
 Requires:	%{libname} = %{version}
 Requires:	ghostscript
 Requires:	graphviz
@@ -170,13 +172,13 @@ This package contains HTML/PDF documentation of %{name}.
 %setup -q -n ImageMagick-%{rversion}
 
 %patch0 -p0 -b .docdir
-%patch1 -p0 -b .djvulibre_fix
 %patch4 -p1 -b .include
 %patch7 -p0 -b .urw
 %patch17 -p0 -b .fpx
 %patch19 -p1 -b .libpath
 %patch20 -p1 -b .ppc
 %patch21 -p0 -b .linkage_fix
+%patch22 -p0 -b .mpeg2
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
