@@ -25,8 +25,8 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 1
-License:	BSD style
+Release:	%mkrel 2
+License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
 Source0:	ftp://gd.tuwien.ac.at/pub/graphics/ImageMagick/ImageMagick-%{dversion}.tar.lzma
@@ -43,6 +43,10 @@ Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
 Patch20:	ImageMagick-6.2.5-fix-montageimages-test.patch
 Patch21:	ImageMagick-linkage_fix.diff
+# Fix an upstream error: reference to ghostscript.mgk instead of
+# ghostscript.xml (suggested by upstream dev, will be fixed in
+# 6.4.3-0) - AdamW 2008/08
+Patch22:	ImageMagick-6.4.2-mgk.patch
 Requires:	%{libname} = %{version}
 Requires:	ghostscript
 Requires:	graphviz
@@ -175,6 +179,7 @@ This package contains HTML/PDF documentation of %{name}.
 %patch19 -p1 -b .libpath
 %patch20 -p1 -b .ppc
 %patch21 -p0 -b .linkage_fix
+%patch22 -p1 -b .mgk
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
