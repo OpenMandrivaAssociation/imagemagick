@@ -8,7 +8,7 @@
 %define rversion 6.4.2
 
 # their "minor" version
-%define minor_rev 6
+%define minor_rev 10
 
 # some other funny version
 %define qlev Q16
@@ -43,9 +43,6 @@ Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
 Patch20:	ImageMagick-6.2.5-fix-montageimages-test.patch
 Patch21:	ImageMagick-linkage_fix.diff
-# From upstream SVN (rev 11804): use ffmpeg not mpeg2decode to decode
-# MPEG files - AdamW 2008/08
-Patch22:	ImageMagick-6.4.2-mpeg2.patch
 Requires:	%{libname} = %{version}
 Requires:	ghostscript
 Requires:	graphviz
@@ -178,7 +175,6 @@ This package contains HTML/PDF documentation of %{name}.
 %patch19 -p1 -b .libpath
 %patch20 -p1 -b .ppc
 %patch21 -p0 -b .linkage_fix
-%patch22 -p0 -b .mpeg2
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
