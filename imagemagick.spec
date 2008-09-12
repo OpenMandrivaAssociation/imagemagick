@@ -25,7 +25,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -48,9 +48,6 @@ Patch21:	ImageMagick-linkage_fix.diff
 # 6.4.3-0) - AdamW 2008/08
 Patch22:	ImageMagick-6.4.2-mgk.patch
 Requires:	%{libname} = %{version}
-Requires:	ghostscript
-Requires:	graphviz
-Requires:	html2ps
 Obsoletes:	ImageMagick < 6.3.2.9-6
 Provides:	ImageMagick = %{version}-%{release}
 BuildRequires:	XFree86-devel
@@ -92,6 +89,9 @@ BuildRequires:	perl-devel
 BuildRequires:	pixman-devel
 BuildRequires:	tiff-devel
 BuildConflicts:	%{name}-devel
+# ImageMagick delegate programs
+# these are in contrib: autotrace povray
+Suggests:	curl enscript ffmpeg ghostscript ghostscript-X gimp gnuplot graphviz html2ps mplayer ncompress netpbm sane-backends tetex-dvips transfig ufraw xdg-utils zip
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
