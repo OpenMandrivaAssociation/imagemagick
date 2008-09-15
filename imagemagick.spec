@@ -25,7 +25,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 4
+Release:	%mkrel 5
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -89,15 +89,17 @@ BuildRequires:	perl-devel
 BuildRequires:	pixman-devel
 BuildRequires:	tiff-devel
 BuildConflicts:	%{name}-devel
-# ImageMagick delegate programs
-# these are in contrib: autotrace povray
-Suggests:	curl enscript ffmpeg ghostscript ghostscript-X gimp gnuplot graphviz html2ps mplayer ncompress netpbm sane-backends tetex-dvips transfig ufraw xdg-utils zip
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 ImageMagick is a powerful image display, conversion and manipulation tool. It
 runs in an X session. With this tool, you can view, edit and display a variety
 of image formats.
+
+ImageMagick can make use of the following delegate programs, available as
+packages in Mandriva Linux: curl enscript ffmpeg ghostscript ghostscript-X gimp
+gnuplot graphviz html2ps mplayer ncompress netpbm sane-backends tetex-dvips
+transfig ufraw xdg-utils zip autotrace povray
 
 %package 	desktop
 Summary:	ImageMagick menus
