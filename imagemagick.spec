@@ -54,8 +54,6 @@ Requires:	%{libname} = %{version}
 Obsoletes:	ImageMagick < 6.3.2.9-6
 Provides:	ImageMagick = %{version}-%{release}
 BuildRequires:	XFree86-devel
-BuildRequires:	autoconf2.5
-BuildRequires:	automake1.8
 BuildRequires:	avahi-client-devel
 BuildRequires:	avahi-common-devel
 BuildRequires:	avahi-glib-devel
@@ -188,13 +186,9 @@ This package contains HTML/PDF documentation of %{name}.
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
+libtoolize --copy --force; aclocal -I m4; autoconf; automake
 
 %build
-export WANT_AUTOCONF_2_5=1
-rm -f configure
-#libtoolize --copy --force; aclocal -I m4; autoconf; automake
-aclocal -I m4; autoconf; automake
-
 #gw the format-string patch is incomplete:
 %define Werror_cflags %nil
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
@@ -203,8 +197,7 @@ export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 # don't use icecream
 export PATH=/bin:/usr/bin:/usr/X11R6/bin
 
-#gw autoconf 2.1 means this macro
-%configure \
+%configure2_5x \
     --with-pic \
     --enable-shared \
     --enable-fast-install \
@@ -222,7 +215,7 @@ export PATH=/bin:/usr/bin:/usr/X11R6/bin
     --with-perl \
     --with-perl-options="INSTALLDIRS=vendor CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='-shared -L$PWD/magick/.libs'" \
     --with-jp2 \
-    --with-dot \
+    --with-gvc \
     --with-lqr
 
 # without the following, it doesn't build correctly with "make -j 4"
