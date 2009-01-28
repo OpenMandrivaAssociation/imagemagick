@@ -5,10 +5,10 @@
 # V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.4.5
+%define rversion 6.4.8
 
 # their "minor" version
-%define minor_rev 4
+%define minor_rev 9
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -21,7 +21,7 @@
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
-%define major 1
+%define major 2
 
 # S T A N D A R D   M A N D R I V A   S T U F F
 %define libname %mklibname magick %{major}
@@ -42,11 +42,13 @@ Source11:	magick-icon_32x32.png
 Source12:	magick-icon_48x48.png
 Source13:	magick-icon_64x64.png
 Patch0:		imagemagick-docdir.diff
-Patch4:		ImageMagick-6.0.1-includedir.patch
+#gw fix format strings, but it doesn't work for the perl-Magick
+Patch1: ImageMagick-6.4.8-9-format-strings.patch
+Patch4:		ImageMagick-6.4.8-9-includedir.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
-Patch20:	ImageMagick-6.2.5-fix-montageimages-test.patch
+Patch20:	ImageMagick-6.4.8-9-fix-montageimages-test.patch
 Patch21:	ImageMagick-linkage_fix.diff
 Requires:	%{libname} = %{version}
 Obsoletes:	ImageMagick < 6.3.2.9-6
@@ -173,9 +175,10 @@ This package contains HTML/PDF documentation of %{name}.
 
 %prep
 
-%setup -q -n ImageMagick-%{rversion}
+%setup -q -n ImageMagick-%{rversion}-%minor_rev
 
-%patch0 -p0 -b .docdir
+%patch0 -p1 -b .docdir
+%patch1 -p1
 %patch4 -p1 -b .include
 %patch7 -p0 -b .urw
 %patch17 -p0 -b .fpx
@@ -192,13 +195,16 @@ rm -f configure
 #libtoolize --copy --force; aclocal -I m4; autoconf; automake
 aclocal -I m4; autoconf; automake
 
+#gw the format-string patch is incomplete:
+%define Werror_cflags %nil
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 
 # don't use icecream
 export PATH=/bin:/usr/bin:/usr/X11R6/bin
 
-%configure2_5x \
+#gw autoconf 2.1 means this macro
+%configure \
     --with-pic \
     --enable-shared \
     --enable-fast-install \
