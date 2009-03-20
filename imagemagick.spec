@@ -5,10 +5,10 @@
 # V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.4.8
+%define rversion 6.5.0
 
 # their "minor" version
-%define minor_rev 9
+%define minor_rev 2
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -30,7 +30,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 3
+Release:	%mkrel 1
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -89,7 +89,7 @@ BuildRequires:	pango-devel
 BuildRequires:	perl-devel
 BuildRequires:	pixman-devel
 BuildRequires:	tiff-devel
-BuildConflicts:	%{name}-devel
+BuildConflicts:	%{develname}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
@@ -198,6 +198,7 @@ export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export PATH=/bin:/usr/bin:/usr/X11R6/bin
 
 %configure2_5x \
+    --docdir=%{_defaultdocdir}/imagemagick \
     --with-pic \
     --enable-shared \
     --enable-fast-install \
