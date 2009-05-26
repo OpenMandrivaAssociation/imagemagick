@@ -5,10 +5,10 @@
 # V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.5.0
+%define rversion 6.5.2
 
 # their "minor" version
-%define minor_rev 2
+%define minor_rev 8
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
