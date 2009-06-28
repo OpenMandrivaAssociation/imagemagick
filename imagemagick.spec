@@ -5,10 +5,10 @@
 # V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.5.2
+%define rversion 6.5.4
 
 # their "minor" version
-%define minor_rev 10
+%define minor_rev 0
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -176,7 +176,7 @@ This package contains HTML/PDF documentation of %{name}.
 %setup -q -n ImageMagick-%{rversion}-%minor_rev
 
 %patch0 -p1 -b .docdir
-%patch1 -p1
+#patch1 -p1
 %patch4 -p1 -b .include
 %patch7 -p0 -b .urw
 %patch17 -p0 -b .fpx
