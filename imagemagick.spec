@@ -2,6 +2,10 @@
 %{?_with_test: %{expand: %%global build_test 1}}
 %{?_without_test: %{expand: %%global build_test 0}}
 
+%define bootstrap 0
+%{?_without_bootstrap: %global bootstrap 0}
+%{?_with_bootstrap: %global bootstrap 1}
+
 # V E R S I O N   P A R T S
 
 # their "official" version
@@ -30,7 +34,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -61,7 +65,9 @@ BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel
 BuildRequires:	chrpath
 BuildRequires:	dbus-glib-devel
+%if !%bootstrap
 BuildRequires:	djvulibre-devel
+%endif
 BuildRequires:	expat-devel
 BuildRequires:	fontconfig-devel
 BuildRequires:	freetype2-devel >= 2.1.7
