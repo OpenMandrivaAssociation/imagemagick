@@ -9,10 +9,10 @@
 # V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.5.4
+%define rversion 6.5.7
 
 # their "minor" version
-%define minor_rev 9
+%define minor_rev 0
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -34,11 +34,11 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 3
+Release:	%mkrel 1
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
-Source0:	ftp://gd.tuwien.ac.at/pub/graphics/ImageMagick/ImageMagick-%{dversion}.tar.lzma
+Source0:	ftp://gd.tuwien.ac.at/pub/graphics/ImageMagick/ImageMagick-%{dversion}.tar.xz
 Source1:	ImageMagick.pdf.bz2
 # re-scaled from ftp://ftp.imagemagick.org/pub/ImageMagick/images/magick-icon.png
 Source10:	magick-icon_16x16.png
