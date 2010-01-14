@@ -25,7 +25,7 @@
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
-%define major 2
+%define major 3
 
 # S T A N D A R D   M A N D R I V A   S T U F F
 %define libname %mklibname magick %{major}
