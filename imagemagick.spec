@@ -25,7 +25,7 @@
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
-%define major 3
+%define major 4
 
 # S T A N D A R D   M A N D R I V A   S T U F F
 %define libname %mklibname magick %{major}
@@ -34,7 +34,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 2
+Release:	%mkrel 1
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
