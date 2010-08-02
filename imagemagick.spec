@@ -54,6 +54,7 @@ Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
 Patch20:	ImageMagick-6.4.8-9-fix-montageimages-test.patch
 Patch21:	ImageMagick-linkage_fix.diff
+Patch22:	ImageMagick-6.6.3-fix-space-characters.patch
 Requires:	%{libname} = %{version}
 Obsoletes:	ImageMagick < 6.3.2.9-6
 Provides:	ImageMagick = %{version}-%{release}
@@ -189,6 +190,7 @@ This package contains HTML/PDF documentation of %{name}.
 %patch19 -p1 -b .libpath
 %patch20 -p1 -b .ppc
 %patch21 -p0 -b .linkage_fix
+%patch22 -p0 -b .space
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
@@ -232,7 +234,7 @@ perl -lpi -e '$_ .= " magick/libMagickCore.la" if index($_, q($(PERLMAKEFILE))) 
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make
+%make
 
 %if %{build_test}
 %check
