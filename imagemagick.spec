@@ -12,7 +12,7 @@
 %define rversion 6.6.4
 
 # their "minor" version
-%define minor_rev 6
+%define minor_rev 7
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
