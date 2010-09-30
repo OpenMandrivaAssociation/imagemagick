@@ -12,7 +12,7 @@
 %define rversion 6.6.4
 
 # their "minor" version
-%define minor_rev 7
+%define minor_rev 8
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -192,7 +192,6 @@ This package contains HTML/PDF documentation of %{name}.
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
-libtoolize --copy --force; aclocal -I m4; autoconf; automake
 
 %build
 #gw the format-string patch is incomplete:
@@ -202,6 +201,7 @@ export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 
 # don't use icecream
 export PATH=/bin:/usr/bin:/usr/X11R6/bin
+autoreconf -fi
 
 %configure2_5x \
     --docdir=%{_defaultdocdir}/imagemagick \
