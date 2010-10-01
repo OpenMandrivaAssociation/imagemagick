@@ -53,7 +53,7 @@ Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
 Patch20:	ImageMagick-6.4.8-9-fix-montageimages-test.patch
-Patch21:	ImageMagick-linkage_fix.diff
+Patch21:	ImageMagick-configure.patch
 Requires:	%{libname} = %{version}
 Obsoletes:	ImageMagick < 6.3.2.9-6
 Provides:	ImageMagick = %{version}-%{release}
@@ -192,6 +192,7 @@ This package contains HTML/PDF documentation of %{name}.
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
+libtoolize --copy --force; aclocal -I m4; autoconf; automake
 
 %build
 #gw the format-string patch is incomplete:
@@ -201,7 +202,6 @@ export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 
 # don't use icecream
 export PATH=/bin:/usr/bin:/usr/X11R6/bin
-autoreconf -fi
 
 %configure2_5x \
     --docdir=%{_defaultdocdir}/imagemagick \
