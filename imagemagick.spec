@@ -34,7 +34,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -56,44 +56,33 @@ Patch20:	ImageMagick-6.4.8-9-fix-montageimages-test.patch
 Requires:	%{libname} = %{version}
 Obsoletes:	ImageMagick < 6.3.2.9-6
 Provides:	ImageMagick = %{version}-%{release}
-BuildRequires:	XFree86-devel
-BuildRequires:	avahi-client-devel
-BuildRequires:	avahi-common-devel
-BuildRequires:	avahi-glib-devel
+BuildRequires:	libx11-devel
+BuildRequires:	libxext-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	cairo-devel
+BuildRequires:	fontconfig-devel
+BuildRequires:	freetype2-devel >= 2.1.7
 BuildRequires:	chrpath
-BuildRequires:	dbus-glib-devel
+BuildRequires:	graphviz-devel >= 2.9.0
+BuildRequires:	libjasper-devel
+BuildRequires:	libjbig-devel
+BuildRequires:	libjpeg-devel
+BuildRequires:	libpng-devel
+BuildRequires:	zlib-devel
+BuildRequires:	lcms-devel
+BuildRequires:	lqr-devel
+BuildRequires:	libltdl-devel
+BuildRequires:	perl-devel
+BuildRequires:	librsvg-devel
+BuildRequires:	tiff-devel
+BuildRequires:	libwmf-devel
+BuildRequires:	libxml2-devel
+BuildRequires:	lzma-devel
 %if !%bootstrap
 BuildRequires:	djvulibre-devel
 %endif
-BuildRequires:	expat-devel
-BuildRequires:	fontconfig-devel
-BuildRequires:	freetype2-devel >= 2.1.7
-BuildRequires:	gd-devel
 BuildRequires:	ghostscript
-BuildRequires:	glib2-devel
-BuildRequires:	gnome-vfs2-devel
-BuildRequires:	graphviz-devel >= 2.9.0
-BuildRequires:	lcms-devel >= 1.15
-BuildRequires:	libGConf2-devel
-BuildRequires:	libcroco0.6-devel
-BuildRequires:	libexif-devel
-BuildRequires:	libgdk_pixbuf2.0-devel
-BuildRequires:	libgsf-devel
-BuildRequires:	libjasper-devel
-BuildRequires:	libjbig-devel
-BuildRequires:	libltdl-devel >= 1.4.3-10
-BuildRequires:	librsvg-devel
-BuildRequires:	libwmf
-BuildRequires:	libwmf-devel
-BuildRequires:	libxml2-devel
-BuildRequires:	lqr-devel
-BuildRequires:	openssl-devel
-BuildRequires:	pango-devel
-BuildRequires:	perl-devel
-BuildRequires:	pixman-devel
-BuildRequires:	tiff-devel
+BuildRequires:	libgs-devel
 BuildConflicts:	%{develname}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -199,7 +188,7 @@ export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 
 # don't use icecream
-export PATH=/bin:/usr/bin:/usr/X11R6/bin
+export PATH=/bin:/usr/bin
 
 %configure2_5x \
     --docdir=%{_defaultdocdir}/imagemagick \
