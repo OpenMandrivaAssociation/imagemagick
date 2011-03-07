@@ -34,7 +34,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -82,7 +82,6 @@ BuildRequires:	lzma-devel
 BuildRequires:	djvulibre-devel
 %endif
 BuildRequires:	ghostscript
-BuildRequires:	libgs-devel
 BuildConflicts:	%{develname}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
