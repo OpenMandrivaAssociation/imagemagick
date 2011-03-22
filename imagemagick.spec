@@ -278,7 +278,7 @@ Exec=%{_bindir}/xterm -geometry 40x15 -title ImageMagick +sb -iconic -e %{_bindi
 Icon=%{name}
 Terminal=false
 Type=Application
-Categories=X-MandrivaLinux-Office-Graphs;Graphics;Viewer;
+Categories=Graphics;Viewer;
 EOF
 
 %if %mdkversion < 200900
@@ -305,6 +305,7 @@ rm -rf %{buildroot}
 %files
 %defattr(-,root,root)
 %doc README.txt
+%{_sysconfdir}/ImageMagick-%{rversion}
 %{_bindir}/animate
 %{_bindir}/compare
 %{_bindir}/composite
@@ -325,6 +326,7 @@ rm -rf %{buildroot}
 #%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.la
 %{_mandir}/man1/*
 %{_mandir}/man3/*
+%{_var}/ImageMagick-%{rversion}
 %exclude %{_mandir}/man3/*::*.3pm*
 
 %files desktop
