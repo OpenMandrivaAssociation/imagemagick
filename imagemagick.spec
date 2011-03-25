@@ -326,7 +326,7 @@ rm -rf %{buildroot}
 #%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.la
 %{_mandir}/man1/*
 %{_mandir}/man3/*
-%{_var}/ImageMagick-%{rversion}
+%{_var}/lib/ImageMagick-%{rversion}
 %exclude %{_mandir}/man3/*::*.3pm*
 
 %files desktop
