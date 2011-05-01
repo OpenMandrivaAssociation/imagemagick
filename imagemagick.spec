@@ -249,10 +249,15 @@ rm -f %{buildroot}%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.a 
       %{buildroot}%{_libdir}/libltdl* 
 
 %multiarch_binaries %{buildroot}%{_bindir}/Magick-config
+
 %multiarch_binaries %{buildroot}%{_bindir}/Magick++-config
+
 %multiarch_binaries %{buildroot}%{_bindir}/MagickCore-config
+
 %multiarch_binaries %{buildroot}%{_bindir}/MagickWand-config
+
 %multiarch_binaries %{buildroot}%{_bindir}/Wand-config
+
 %multiarch_includes %{buildroot}%{_includedir}/ImageMagick/magick/magick-config.h
 
 # nuke rpath
@@ -345,14 +350,14 @@ rm -rf %{buildroot}
 %files -n %{develname}
 %defattr(-,root,root)
 %{_includedir}/ImageMagick
-%multiarch %{multiarch_bindir}/Magick-config
-%multiarch %{multiarch_bindir}/Magick++-config
-%multiarch %{multiarch_bindir}/MagickCore-config
-%multiarch %{multiarch_bindir}/MagickWand-config
-%multiarch %{multiarch_bindir}/Wand-config
-%multiarch %dir %{multiarch_includedir}/ImageMagick
-%multiarch %dir %{multiarch_includedir}/ImageMagick/magick
-%multiarch %{multiarch_includedir}/ImageMagick/magick/magick-config.h
+%{multiarch_bindir}/Magick-config
+%{multiarch_bindir}/Magick++-config
+%{multiarch_bindir}/MagickCore-config
+%{multiarch_bindir}/MagickWand-config
+%{multiarch_bindir}/Wand-config
+%dir %{multiarch_includedir}/ImageMagick
+%dir %{multiarch_includedir}/ImageMagick/magick
+%{multiarch_includedir}/ImageMagick/magick/magick-config.h
 %{_bindir}/Magick-config
 %{_bindir}/Magick++-config
 %{_bindir}/MagickCore-config
