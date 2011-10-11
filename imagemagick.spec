@@ -33,8 +33,8 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 2
+Version:	6.7.3.0
+Release:	%mkrel 1
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
