@@ -9,10 +9,10 @@
 # V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.7.0
+%define rversion 6.7.3
 
 # their "minor" version
-%define minor_rev 9
+%define minor_rev 4
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -25,7 +25,7 @@
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
-%define major 4
+%define major 5
 
 # S T A N D A R D   M A N D R I V A   S T U F F
 %define libname %mklibname magick %{major}
@@ -33,7 +33,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	6.7.3.1
+Version:	%{rversion}.%{minor_rev}
 Release:	%mkrel 1
 License:	BSD-like
 Group:		Graphics
@@ -46,9 +46,6 @@ Source11:	magick-icon_32x32.png
 Source12:	magick-icon_48x48.png
 Source13:	magick-icon_64x64.png
 Patch0:		imagemagick-docdir.diff
-#gw fix format strings, but it doesn't work for the perl-Magick
-Patch1: ImageMagick-6.4.8-9-format-strings.patch
-Patch4:		ImageMagick-6.4.8-9-includedir.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
@@ -82,6 +79,7 @@ BuildRequires:	lzma-devel
 BuildRequires:	djvulibre-devel
 %endif
 BuildRequires:	ghostscript
+BuildRequires:	autoconf >= 1:2.67
 BuildConflicts:	%{develname}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
@@ -160,6 +158,7 @@ support files for access to ImageMagick library from perl.
 Summary:	%{name} Documentation
 Group:		Books/Other
 Obsoletes:	ImageMagick-doc < 6.3.2.9-6
+BuildArch:	noarch
 
 %description	doc
 This package contains HTML/PDF documentation of %{name}.
@@ -169,8 +168,6 @@ This package contains HTML/PDF documentation of %{name}.
 %setup -q -n ImageMagick-%{rversion}-%minor_rev
 
 %patch0 -p1 -b .docdir
-#patch1 -p1
-%patch4 -p1 -b .include
 %patch7 -p0 -b .urw
 %patch17 -p0 -b .fpx
 %patch19 -p1 -b .libpath
