@@ -12,7 +12,7 @@
 %define rversion 6.7.3
 
 # their "minor" version
-%define minor_rev 7
+%define minor_rev 9
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -34,7 +34,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	%mkrel 1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -50,9 +50,6 @@ Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
 Patch20:	ImageMagick-6.4.8-9-fix-montageimages-test.patch
-Requires:	%{libname} = %{version}
-Obsoletes:	ImageMagick < 6.3.2.9-6
-Provides:	ImageMagick = %{version}-%{release}
 BuildRequires:	libx11-devel
 BuildRequires:	libxext-devel
 BuildRequires:	bzip2-devel
@@ -81,7 +78,9 @@ BuildRequires:	djvulibre-devel
 BuildRequires:	ghostscript
 BuildRequires:	autoconf >= 1:2.67
 BuildConflicts:	%{develname}
-BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+
+Requires:	%{libname} = %{version}
+%rename:	ImageMagick 
 
 %description
 ImageMagick is a powerful image display, conversion and manipulation tool. It
@@ -114,7 +113,7 @@ This package contains the libraries needed to run programs dynamically linked
 with ImageMagick libraries.
 
 %package -n	%{develname}
-Summary:	Static libraries and header files for ImageMagick app development
+Summary:	Development libraries and header files for ImageMagick app development
 Group:		Development/C
 Requires:	%{libname} = %{version}
 Provides:	%{name}-devel = %{version}-%{release}
@@ -138,7 +137,7 @@ If you want to create applications that will use ImageMagick code or APIs,
 you'll need to install these packages as well as ImageMagick. These additional
 packages aren't necessary if you simply want to use ImageMagick, however.
 
-ImageMagick-devel is an addition to ImageMagick which includes static libraries
+ImageMagick-devel is an addition to ImageMagick which includes development libraries
 and header files necessary to develop applications.
 
 %package -n	perl-Image-Magick
@@ -187,6 +186,7 @@ export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export PATH=/bin:/usr/bin
 
 %configure2_5x \
+	--disable-static \
     --docdir=%{_defaultdocdir}/imagemagick \
     --with-pic \
     --enable-shared \
@@ -241,9 +241,8 @@ rm -rf %{buildroot}
 rm -rf installed_docs; mv %{buildroot}/installed_docs .
 
 # Remove unpackaged files
-rm -f %{buildroot}%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*.a \
-      %{buildroot}%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/filters/*.a \
-      %{buildroot}%{_libdir}/libltdl* 
+find %{buildroot} -name '*.la' | xargs rm
+rm -f %{buildroot}%{_libdir}/libltdl* 
 
 %multiarch_binaries %{buildroot}%{_bindir}/Magick-config
 
@@ -283,29 +282,7 @@ Type=Application
 Categories=Graphics;Viewer;
 EOF
 
-%if %mdkversion < 200900
-%post desktop
-%update_menus
-%endif
-
-%if %mdkversion < 200900
-%postun desktop
-%clean_menus
-%endif
-
-%if %mdkversion < 200900
-%post -n %{libname} -p /sbin/ldconfig
-%endif
-
-%if %mdkversion < 200900
-%postun -n %{libname} -p /sbin/ldconfig
-%endif
-
-%clean
-rm -rf %{buildroot}
-
 %files
-%defattr(-,root,root)
 %doc README.txt
 %{_sysconfdir}/ImageMagick
 %{_bindir}/animate
@@ -330,7 +307,6 @@ rm -rf %{buildroot}
 %exclude %{_mandir}/man3/*::*.3pm*
 
 %files desktop
-%defattr(-,root,root)
 %{_datadir}/applications/*
 %{_iconsdir}/%{name}.png
 %{_liconsdir}/%{name}.png
@@ -338,13 +314,11 @@ rm -rf %{buildroot}
 %{_iconsdir}/hicolor/64x64/apps/%{name}.png
 
 %files -n %{libname}
-%defattr(-,root,root,0755)
 %{_libdir}/libMagick++.so.%{major}*
 %{_libdir}/libMagickCore.so.%{major}*
 %{_libdir}/libMagickWand.so.%{major}*
 
 %files -n %{develname}
-%defattr(-,root,root)
 %{_includedir}/ImageMagick
 %{multiarch_bindir}/Magick-config
 %{multiarch_bindir}/Magick++-config
@@ -359,18 +333,14 @@ rm -rf %{buildroot}
 %{_bindir}/MagickCore-config
 %{_bindir}/MagickWand-config
 %{_bindir}/Wand-config
-%attr(0644,root,root) %{_libdir}/*.a
-%attr(0644,root,root) %{_libdir}/*.la
 %{_libdir}/*.so
 %{_libdir}/pkgconfig/*.pc
 
 %files -n perl-Image-Magick
-%defattr(-,root,root)
 %{perl_vendorarch}/Image
 %{perl_vendorarch}/auto/Image
 %{_mandir}/man3*/*::*.3pm*
 
 %files doc
-%defattr(-,root,root)
 %doc ImageMagick.pdf ChangeLog LICENSE NEWS* NOTICE
 %doc QuickStart.txt installed_docs/*
