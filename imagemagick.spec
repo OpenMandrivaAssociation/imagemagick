@@ -80,7 +80,7 @@ BuildRequires:	autoconf >= 1:2.67
 BuildConflicts:	%{develname}
 
 Requires:	%{libname} = %{version}
-%rename:	ImageMagick 
+%rename		ImageMagick 
 
 %description
 ImageMagick is a powerful image display, conversion and manipulation tool. It
