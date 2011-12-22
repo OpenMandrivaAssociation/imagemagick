@@ -34,7 +34,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	2
+Release:	3
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
