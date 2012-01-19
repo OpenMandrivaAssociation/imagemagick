@@ -1,18 +1,11 @@
 %define build_test 0
-%{?_with_test: %{expand: %%global build_test 1}}
-%{?_without_test: %{expand: %%global build_test 0}}
-
 %define bootstrap 0
-%{?_without_bootstrap: %global bootstrap 0}
-%{?_with_bootstrap: %global bootstrap 1}
-
-# V E R S I O N   P A R T S
 
 # their "official" version
-%define rversion 6.7.3
+%define rversion 6.7.4
 
 # their "minor" version
-%define minor_rev 9
+%define minor_rev 7
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -26,15 +19,13 @@
 %define dversion %{rversion}-%{minor_rev}
 
 %define major 5
-
-# S T A N D A R D   M A N D R I V A   S T U F F
 %define libname %mklibname magick %{major}
 %define develname %mklibname magick -d
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	3
+Release:	1
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -76,11 +67,8 @@ BuildRequires:	lzma-devel
 BuildRequires:	djvulibre-devel
 %endif
 BuildRequires:	ghostscript
-BuildRequires:	autoconf >= 1:2.67
 BuildConflicts:	%{develname}
-
 Requires:	%{libname} = %{version}
-%rename		ImageMagick 
 
 %description
 ImageMagick is a powerful image display, conversion and manipulation tool. It
@@ -96,7 +84,6 @@ transfig ufraw xdg-utils zip autotrace povray
 Summary:	ImageMagick menus
 Group:		Graphics
 Requires:	xterm
-Obsoletes:	ImageMagick-desktop < 6.3.2.9-6
 
 %description	desktop
 This package contains the menu and .desktop entries to run the "display"
@@ -118,19 +105,6 @@ Group:		Development/C
 Requires:	%{libname} = %{version}
 Provides:	%{name}-devel = %{version}-%{release}
 Provides:	ImageMagick-devel = %{version}-%{release}
-Provides:	libmagick-devel = %{version}-%{release}
-Provides:	libMagick-devel = %{version}-%{release}
-Obsoletes:	ImageMagick-devel
-Provides:	libMagick5-devel = %{version}-%{release}
-Obsoletes:	libMagick5-devel
-# 2006
-Obsoletes:	%{mklibname Magick 8.3.2 -d}
-# 2007.0
-Obsoletes:	%{mklibname magick 10.4.0 -d} %{mklibname Magick 10.4.0 -d}
-# 2007.1/2008.0
-Obsoletes:	%{mklibname magick 10.7.0 -d} %{mklibname Magick 10.7.0 -d}
-# pre 2008.1
-Obsoletes:	%{mklibname magick 10.9.0 -d} %{mklibname Magick 10.9.0 -d}
 
 %description -n	%{develname}
 If you want to create applications that will use ImageMagick code or APIs,
@@ -144,8 +118,6 @@ and header files necessary to develop applications.
 Summary:	Libraries and modules for access to ImageMagick from perl
 Group:		Development/Perl
 Requires:	%{name} = %{version}
-Provides:	perl-Magick = %{version}-%{release}
-Obsoletes:	perl-Magick
 Requires:	graphviz
 Requires:	libwmf
 
@@ -156,16 +128,13 @@ support files for access to ImageMagick library from perl.
 %package	doc
 Summary:	%{name} Documentation
 Group:		Books/Other
-Obsoletes:	ImageMagick-doc < 6.3.2.9-6
 BuildArch:	noarch
 
 %description	doc
 This package contains HTML/PDF documentation of %{name}.
 
 %prep
-
 %setup -q -n ImageMagick-%{rversion}-%minor_rev
-
 %patch0 -p1 -b .docdir
 %patch7 -p0 -b .urw
 %patch17 -p0 -b .fpx
@@ -268,7 +237,6 @@ install -m 644 magick-icon_16x16.png %{buildroot}%{_miconsdir}/%{name}.png
 install -m 644 magick-icon_32x32.png %{buildroot}%{_iconsdir}/%{name}.png
 install -m 644 magick-icon_48x48.png %{buildroot}%{_liconsdir}/%{name}.png
 install -m 644 magick-icon_64x64.png %{buildroot}%{_iconsdir}/hicolor/64x64/apps/%{name}.png
-
 
 install -m 755 -d %{buildroot}%{_datadir}/applications/
 cat > %{buildroot}%{_datadir}/applications/mandriva-%{name}.desktop << EOF
