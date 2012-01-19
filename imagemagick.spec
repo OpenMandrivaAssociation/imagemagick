@@ -1,3 +1,4 @@
+%define _disable_ld_no_undefined 1
 %define build_test 0
 %define bootstrap 0
 
