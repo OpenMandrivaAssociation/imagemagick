@@ -6,7 +6,7 @@
 %define rversion 6.7.5
 
 # their "minor" version
-%define minor_rev 0
+%define minor_rev 7
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -30,7 +30,7 @@ Release:	1
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
-Source0:	ftp://gd.tuwien.ac.at/pub/graphics/ImageMagick/ImageMagick-%{dversion}.tar.xz
+Source0:	ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-%dversion.tar.xz
 Source1:	ImageMagick.pdf.bz2
 # re-scaled from ftp://ftp.imagemagick.org/pub/ImageMagick/images/magick-icon.png
 Source10:	magick-icon_16x16.png
