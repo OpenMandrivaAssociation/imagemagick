@@ -57,14 +57,16 @@ BuildRequires:	libpng-devel
 BuildRequires:	zlib-devel
 BuildRequires:	lcms-devel
 BuildRequires:	lqr-devel
-BuildRequires:	libltdl-devel
+BuildRequires:	libtool-devel
 BuildRequires:	perl-devel
 BuildRequires:	librsvg-devel
 BuildRequires:	tiff-devel
 BuildRequires:	libwmf-devel
 BuildRequires:	libxml2-devel
 BuildRequires:	lzma-devel
+#gw aclocal:
 BuildRequires:	subversion
+BuildRequires:	automake > 1.11.1
 %if !%bootstrap
 BuildRequires:	djvulibre-devel
 %endif
