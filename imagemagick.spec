@@ -66,7 +66,7 @@ BuildRequires:	libxml2-devel
 BuildRequires:	lzma-devel
 #gw aclocal:
 BuildRequires:	subversion
-BuildRequires:	automake > 1.11.1
+BuildRequires:	automake >= 1.11.3
 %if !%bootstrap
 BuildRequires:	djvulibre-devel
 %endif
