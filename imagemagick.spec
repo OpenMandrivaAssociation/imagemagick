@@ -258,6 +258,12 @@ Type=Application
 Categories=Graphics;Viewer;
 EOF
 
+#gw don't know why this doesn't exist in 2011:
+%if %mdvver <= 201100
+mkdir -p %buildroot%{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders
+%endif
+
+
 %files
 %doc README.txt
 %{_sysconfdir}/ImageMagick
