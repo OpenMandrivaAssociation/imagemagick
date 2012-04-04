@@ -64,6 +64,7 @@ BuildRequires:	tiff-devel
 BuildRequires:	libwmf-devel
 BuildRequires:	libxml2-devel
 BuildRequires:	lzma-devel
+BuildRequires:	subversion
 %if !%bootstrap
 BuildRequires:	djvulibre-devel
 %endif
