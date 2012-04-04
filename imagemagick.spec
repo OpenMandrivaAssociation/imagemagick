@@ -70,6 +70,10 @@ BuildRequires:	djvulibre-devel
 BuildRequires:	ghostscript
 BuildConflicts:	%{develname}
 Requires:	%{libname} = %{version}
+%if %mdvver <= 201100
+Provides: ImageMagick = %version-%release
+Obsoletes: ImageMagick < %version
+%endif
 
 %description
 ImageMagick is a powerful image display, conversion and manipulation tool. It
