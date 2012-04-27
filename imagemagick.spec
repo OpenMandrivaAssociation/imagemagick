@@ -1,4 +1,6 @@
 %define _disable_ld_no_undefined 1
+# ImageMagick actually uses libtool to load its modules
+%define dont_remove_libtool_files 1
 %define build_test 0
 %define bootstrap 0
 
@@ -26,7 +28,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -149,7 +151,7 @@ This package contains HTML/PDF documentation of %{name}.
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
-libtoolize --copy --force; aclocal -I m4; autoconf; automake
+libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 
 %build
 #gw the format-string patch is incomplete:
@@ -216,7 +218,7 @@ rm -rf %{buildroot}
 rm -rf installed_docs; mv %{buildroot}/installed_docs .
 
 # Remove unpackaged files
-find %{buildroot} -name '*.la' | xargs rm
+rm %buildroot%_libdir/*.la
 rm -f %{buildroot}%{_libdir}/libltdl* 
 
 %multiarch_binaries %{buildroot}%{_bindir}/Magick-config
