@@ -21,7 +21,7 @@
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
-%define major 5
+%define major 6
 %define libname %mklibname magick %{major}
 %define develname %mklibname magick -d
 
@@ -179,9 +179,6 @@ export PATH=/bin:/usr/bin
     --with-gvc \
     --with-lqr
 
-# without the following, it doesn't build correctly with "make -j 4"
-perl -lpi -e '$_ .= " magick/libMagickCore.la" if index($_, q($(PERLMAKEFILE))) == 0' Makefile
-
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
@@ -214,6 +211,11 @@ rm -rf installed_docs; mv %{buildroot}/installed_docs .
 # Remove unpackaged files
 rm %buildroot%_libdir/*.la
 rm -f %{buildroot}%{_libdir}/libltdl* 
+
+# create compatible symlinks
+ln -s libMagick++-%{major}.%{qlev}.so %{buildroot}%{_libdir}/libMagick++.so
+ln -s libMagickCore-%{major}.%{qlev}.so %{buildroot}%{_libdir}/libMagickCore.so
+ln -s libMagickWand-%{major}.%{qlev}.so %{buildroot}%{_libdir}/libMagickWand.so
 
 %multiarch_binaries %{buildroot}%{_bindir}/Magick-config
 
@@ -273,8 +275,7 @@ EOF
 %{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/coders/*
 %dir %{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/filters
 %{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/filters/*
-%dir %{_libdir}/ImageMagick-%{rversion}/config
-%{_libdir}/ImageMagick-%{rversion}/config/*.xml
+%{_libdir}/ImageMagick-%{rversion}/config-%{qlev}
 %{_datadir}/ImageMagick-%{rversion}
 %{_mandir}/man1/*
 %{_mandir}/man3/*
@@ -288,9 +289,9 @@ EOF
 %{_iconsdir}/hicolor/64x64/apps/%{name}.png
 
 %files -n %{libname}
-%{_libdir}/libMagick++.so.%{major}*
-%{_libdir}/libMagickCore.so.%{major}*
-%{_libdir}/libMagickWand.so.%{major}*
+%{_libdir}/libMagick++-%{major}.%{qlev}.so.*
+%{_libdir}/libMagickCore-%{major}.%{qlev}.so.*
+%{_libdir}/libMagickWand-%{major}.%{qlev}.so.*
 
 %files -n %{develname}
 %{_includedir}/ImageMagick
