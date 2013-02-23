@@ -63,6 +63,7 @@ BuildRequires:	tiff-devel
 BuildRequires:	libwmf-devel
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	lzma-devel
+BuildRequires:	graphviz-devel
 #gw aclocal:
 BuildRequires:	subversion
 BuildRequires:	automake > 1.11.1
@@ -185,7 +186,7 @@ perl -lpi -e '$_ .= " magick/libMagickCore.la" if index($_, q($(PERLMAKEFILE))) 
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-%make
+make
 
 %if %{build_test}
 %check
