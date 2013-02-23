@@ -50,7 +50,6 @@ BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(fontconfig)
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	chrpath
-BuildRequires:	pkgconfig(libgraph)
 BuildRequires:	pkgconfig(jasper)
 BuildRequires:	jbig-devel
 BuildRequires:	jpeg-devel
