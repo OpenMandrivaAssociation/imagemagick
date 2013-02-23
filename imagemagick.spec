@@ -5,10 +5,10 @@
 %define bootstrap 0
 
 # their "official" version
-%define rversion 6.7.7
+%define rversion 6.8.3
 
 # their "minor" version
-%define minor_rev 0
+%define minor_rev 3
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -28,7 +28,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	2
+Release:	1
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
