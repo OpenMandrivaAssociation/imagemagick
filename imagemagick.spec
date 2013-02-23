@@ -42,7 +42,6 @@ Source13:	magick-icon_64x64.png
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
-Patch20:	ImageMagick-6.4.8-9-fix-montageimages-test.patch
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
 BuildRequires:	bzip2-devel
@@ -142,7 +141,6 @@ This package contains HTML/PDF documentation of %{name}.
 %patch7 -p0 -b .urw
 %patch17 -p0 -b .fpx
 %patch19 -p1 -b .libpath
-%patch20 -p1 -b .ppc
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
