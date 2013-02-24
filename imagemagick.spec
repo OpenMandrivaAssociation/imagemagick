@@ -179,9 +179,6 @@ export PATH=/bin:/usr/bin
     --with-gvc \
     --with-lqr
 
-# without the following, it doesn't build correctly with "make -j 4"
-perl -lpi -e '$_ .= " magick/libMagickCore.la" if index($_, q($(PERLMAKEFILE))) == 0' Makefile
-
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
