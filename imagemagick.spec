@@ -34,6 +34,7 @@ Group:		Graphics
 URL:		http://www.imagemagick.org/
 Source0:	ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-%dversion.tar.xz
 Source1:	ImageMagick.pdf.bz2
+Source2:	%{name}.rpmlintrc
 # re-scaled from ftp://ftp.imagemagick.org/pub/ImageMagick/images/magick-icon.png
 Source10:	magick-icon_16x16.png
 Source11:	magick-icon_32x32.png
