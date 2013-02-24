@@ -54,17 +54,17 @@ BuildRequires:	pkgconfig(jasper)
 BuildRequires:	jbig-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	pkgconfig(libpng)
-BuildRequires:	zlib-devel
+BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(lcms)
 BuildRequires:	pkgconfig(lqr-1)
 BuildRequires:	libtool-devel
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig(librsvg-2.0)
-BuildRequires:	tiff-devel
+BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	libwmf-devel
 BuildRequires:	pkgconfig(libxml-2.0)
-BuildRequires:	lzma-devel
-BuildRequires:	graphviz-devel
+BuildRequires:	pkgconfig(liblzma)
+BuildRequires:	pkgconfig(libgvc)
 #gw aclocal:
 BuildRequires:	subversion
 BuildRequires:	automake > 1.11.1
