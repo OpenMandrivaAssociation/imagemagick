@@ -40,7 +40,6 @@ Source10:	magick-icon_16x16.png
 Source11:	magick-icon_32x32.png
 Source12:	magick-icon_48x48.png
 Source13:	magick-icon_64x64.png
-Source100:	imagemagick.rpmlintrc
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
