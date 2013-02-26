@@ -28,7 +28,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 URL:		http://www.imagemagick.org/
@@ -44,6 +44,7 @@ Source100:	imagemagick.rpmlintrc
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
+Patch20:	imagemagick-6.8.3-pkgconfig.patch
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
 BuildRequires:	bzip2-devel
@@ -144,6 +145,7 @@ This package contains HTML/PDF documentation of %{name}.
 %patch7 -p0 -b .urw
 %patch17 -p0 -b .fpx
 %patch19 -p1 -b .libpath
+%patch20 -p0 -b .pkgconfig
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
