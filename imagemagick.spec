@@ -8,7 +8,7 @@
 %define rversion 6.8.3
 
 # their "minor" version
-%define minor_rev 3
+%define minor_rev 4
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -34,6 +34,7 @@ Group:		Graphics
 URL:		http://www.imagemagick.org/
 Source0:	ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-%dversion.tar.xz
 Source1:	ImageMagick.pdf.bz2
+Source2:	%{name}.rpmlintrc
 # re-scaled from ftp://ftp.imagemagick.org/pub/ImageMagick/images/magick-icon.png
 Source10:	magick-icon_16x16.png
 Source11:	magick-icon_32x32.png
@@ -54,17 +55,17 @@ BuildRequires:	pkgconfig(jasper)
 BuildRequires:	jbig-devel
 BuildRequires:	jpeg-devel
 BuildRequires:	pkgconfig(libpng)
-BuildRequires:	zlib-devel
+BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(lcms)
 BuildRequires:	pkgconfig(lqr-1)
 BuildRequires:	libtool-devel
 BuildRequires:	perl-devel
 BuildRequires:	pkgconfig(librsvg-2.0)
-BuildRequires:	tiff-devel
+BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	libwmf-devel
 BuildRequires:	pkgconfig(libxml-2.0)
-BuildRequires:	lzma-devel
-BuildRequires:	graphviz-devel
+BuildRequires:	pkgconfig(liblzma)
+BuildRequires:	pkgconfig(libgvc)
 #gw aclocal:
 BuildRequires:	subversion
 BuildRequires:	automake > 1.11.1
@@ -184,7 +185,7 @@ export PATH=/bin:/usr/bin
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-make
+%make
 
 %if %{build_test}
 %check
