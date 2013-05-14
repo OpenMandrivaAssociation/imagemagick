@@ -1,5 +1,5 @@
---- configure.ac	2007-12-31 18:46:58.000000000 +0100
-+++ configure.ac.oden	2007-12-31 18:48:10.000000000 +0100
+--- ./configure.ac	2007-12-31 18:46:58.000000000 +0100
++++ ./configure.ac.oden	2007-12-31 18:48:10.000000000 +0100
 @@ -1439,7 +1439,7 @@
              AC_MSG_RESULT([no -- some components failed test])
              have_fpx='no (failed tests)'

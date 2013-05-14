@@ -1,5 +1,5 @@
---- config/type-ghostscript.xml.in	2007-10-28 04:50:01.000000000 +0100
-+++ config/type-ghostscript.xml.in.oden	2007-12-31 18:44:45.000000000 +0100
+--- ./config/type-ghostscript.xml.in	2007-10-28 04:50:01.000000000 +0100
++++ ./config/type-ghostscript.xml.in.oden	2007-12-31 18:44:45.000000000 +0100
 @@ -51,4 +51,415 @@
    <type name="Times-Italic" fullname="Times Regular Italic" family="Times" foundry="URW" weight="400" style="italic" stretch="normal" format="type1" metrics="@ghostscript_font_dir@n021023l.afm" glyphs="@ghostscript_font_dir@n021023l.pfb"/>
    <type name="Times-BoldItalic" fullname="Times Medium Italic" family="Times" foundry="URW" weight="700" style="italic" stretch="normal" format="type1" metrics="@ghostscript_font_dir@n021024l.afm" glyphs="@ghostscript_font_dir@n021024l.pfb"/>

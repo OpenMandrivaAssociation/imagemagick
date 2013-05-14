@@ -1,4 +1,2 @@
 # Just for the debug stuff
 addFilter("E: non-standard-dir-perm")
-addFilter("E: incoherent-version-in-name")
-
