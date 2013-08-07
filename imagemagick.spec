@@ -13,16 +13,17 @@
 %define qlev Q16
 
 # their "official" version
-%define rversion 6.8.5
+%define rversion 6.8.6
 # their "minor" version
-%define minor_rev 6
+%define minor_rev 8
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
 %define api	6
 %define major	1
+%define cppmajor 2
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{major}
-%define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
+%define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{cppmajor}
 %define libMagickWand %mklibname MagickWand %{api}.%{qlev} %{major}
 %define devname %mklibname magick -d
 
@@ -300,7 +301,7 @@ EOF
 %{_miconsdir}/%{name}.png
 
 %files -n %{libMagickpp}
-%{_libdir}/libMagick++-%{api}.%{qlev}.so.%{major}*
+%{_libdir}/libMagick++-%{api}.%{qlev}.so.%{cppmajor}*
 
 %files -n %{libMagickCore}
 %{_libdir}/libMagickCore-%{api}.%{qlev}.so.%{major}*
