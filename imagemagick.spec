@@ -30,7 +30,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
@@ -97,7 +97,7 @@ command from the menu.
 %package -n	%{libMagickpp}
 Summary:	ImageMagick libraries
 Group:		System/Libraries
-Obsoletes:	%{_lib}magick6 < 6.8.3.4-3
+Obsoletes:	%{_lib}magick6 < 6.8.5.6-1
 
 %description -n	%{libMagickpp}
 This package contains a library for %{name}.
@@ -105,7 +105,7 @@ This package contains a library for %{name}.
 %package -n	%{libMagickCore}
 Summary:	ImageMagick libraries
 Group:		System/Libraries
-Conflicts:	%{_lib}magick6 < 6.8.3.4-3
+Conflicts:	%{_lib}magick6 < 6.8.5.6-1
 
 %description -n	%{libMagickCore}
 This package contains a library for %{name}.
@@ -113,7 +113,7 @@ This package contains a library for %{name}.
 %package -n	%{libMagickWand}
 Summary:	ImageMagick libraries
 Group:		System/Libraries
-Conflicts:	%{_lib}magick6 < 6.8.3.4-3
+Conflicts:	%{_lib}magick6 < 6.8.5.6-1
 
 %description -n	%{libMagickWand}
 This package contains a library for %{name}.
