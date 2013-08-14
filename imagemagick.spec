@@ -22,15 +22,15 @@
 %define api	6
 %define major	1
 %define cppmajor 2
-%define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{major}
-%define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{cppmajor}
+%define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
+%define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
 %define libMagickWand %mklibname MagickWand %{api}.%{qlev} %{major}
 %define devname %mklibname magick -d
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	2
+Release:	3
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
