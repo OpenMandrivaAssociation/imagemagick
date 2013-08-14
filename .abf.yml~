@@ -1,4 +1,6 @@
 sources:
+  ImageMagick-6.8.3-4.tar.xz: 60499068e5bd3feacf213256b3744c30530f63c1
+  ImageMagick-6.8.5-6.tar.xz: 3c932aa3febb1e992a780e9091925bdbc0d61613
   ImageMagick-6.8.6-8.tar.xz: fe298492c6be08eb887d02b75efeb609fa6c4d61
   ImageMagick.pdf.bz2: b0d9dc4ec2e7a1c406cdbfb23db489648765996d
   magick-icon_16x16.png: f900180b450d12a3bf855bad264ea6c48e7fbd0d
