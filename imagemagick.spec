@@ -20,8 +20,8 @@
 %define dversion %{rversion}-%{minor_rev}
 
 %define api	6
-%define major	1
-%define cppmajor 2
+%define major	2
+%define cppmajor 3
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
 %define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
 %define libMagickWand %mklibname MagickWand %{api}.%{qlev} %{major}
