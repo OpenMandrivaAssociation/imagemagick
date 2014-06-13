@@ -182,8 +182,7 @@ export PATH=/bin:/usr/bin
 	--with-gslib \
 	--with-wmf \
     --without-lcms \
-    --with-lcms2 \ 
-    --with-rsvg \
+    --with-lcms2 \
 	--with-xml \
 	--without-dps \
 	--without-windows-font-dir \
