@@ -30,7 +30,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	7
+Release:	8
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
@@ -60,7 +60,7 @@ BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(fontconfig)
 BuildRequires:	pkgconfig(freetype2)
 BuildRequires:	pkgconfig(jasper)
-BuildRequires:	pkgconfig(lcms)
+BuildRequires:	pkgconfig(lcms2)
 BuildRequires:	pkgconfig(libgvc)
 BuildRequires:	pkgconfig(liblzma)
 BuildRequires:	pkgconfig(libtiff-4)
@@ -181,7 +181,8 @@ export PATH=/bin:/usr/bin
 	--with-magick_plus_plus \
 	--with-gslib \
 	--with-wmf \
-	--with-lcms \
+	--without-lcms \
+    --with-lcms2 \ 
 	--with-rsvg \
 	--with-xml \
 	--without-dps \
