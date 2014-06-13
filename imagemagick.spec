@@ -181,9 +181,9 @@ export PATH=/bin:/usr/bin
 	--with-magick_plus_plus \
 	--with-gslib \
 	--with-wmf \
-	--without-lcms \
+    --without-lcms \
     --with-lcms2 \ 
-	--with-rsvg \
+    --with-rsvg \
 	--with-xml \
 	--without-dps \
 	--without-windows-font-dir \
