@@ -174,7 +174,7 @@ export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 # don't use icecream
 export PATH=/bin:/usr/bin
 
-%configure2_5x \
+%configure \
 	--disable-static \
 	--docdir=%{_defaultdocdir}/imagemagick \
 	--with-pic \
