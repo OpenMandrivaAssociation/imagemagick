@@ -13,15 +13,15 @@
 %define qlev Q16
 
 # their "official" version
-%define rversion 6.8.8
+%define rversion 6.8.9
 # their "minor" version
-%define minor_rev 5
+%define minor_rev 4
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
 %define api	6
 %define major	2
-%define cppmajor 3
+%define cppmajor 5
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
 %define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
 %define libMagickWand %mklibname MagickWand %{api}.%{qlev} %{major}
@@ -30,7 +30,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	9
+Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
