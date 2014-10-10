@@ -246,6 +246,7 @@ ln -s libMagickWand-%{api}.%{qlev}.so %{buildroot}%{_libdir}/libMagickWand.so
 %multiarch_includes %{buildroot}%{_includedir}/ImageMagick-%{api}/magick/magick-config.h
 
 # nuke rpath
+chmod u+w %{buildroot}%{perl_vendorarch}/auto/Image/Magick/Magick.so
 chrpath -d %{buildroot}%{perl_vendorarch}/auto/Image/Magick/Magick.so
 
 # icons
