@@ -30,7 +30,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	3
+Release:	4
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
@@ -263,7 +263,9 @@ install -m 755 -d %{buildroot}%{_datadir}/applications/
 cat > %{buildroot}%{_datadir}/applications/%{name}.desktop << EOF
 [Desktop Entry]
 Name=ImageMagick
+Name[ru]=ImageMagick
 Comment=Views Graphics files
+Comment[ru]=Просмотр графических файлов
 Exec=%{_bindir}/xterm -geometry 40x15 -title ImageMagick +sb -iconic -e %{_bindir}/display
 Icon=%{name}
 Terminal=false
