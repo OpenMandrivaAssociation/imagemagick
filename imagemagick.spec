@@ -13,7 +13,7 @@
 %define qlev Q16
 
 # their "official" version
-%define rversion 6.9.0
+%define rversion 6.9.1
 # their "minor" version
 %define minor_rev 0
 # the full file version
@@ -21,7 +21,7 @@
 
 %define api	6
 %define major	2
-%define cppmajor 5
+%define cppmajor 6
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
 %define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
 %define libMagickWand %mklibname MagickWand %{api}.%{qlev} %{major}
