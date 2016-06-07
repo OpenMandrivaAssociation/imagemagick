@@ -169,6 +169,11 @@ libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 
+%ifarch %arm
+export CC=gcc
+export CXX=g++
+%endif
+
 # don't use icecream
 export PATH=/bin:/usr/bin
 
