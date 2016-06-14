@@ -42,6 +42,7 @@ Source10:	magick-icon_16x16.png
 Source11:	magick-icon_32x32.png
 Source12:	magick-icon_48x48.png
 Source13:	magick-icon_64x64.png
+Patch0:		perlmagick.rpath.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
@@ -71,6 +72,7 @@ BuildRequires:	pkgconfig(lqr-1)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
 BuildRequires:	pkgconfig(zlib)
+BuildRequires:	pkgconfig(libwebp)
 %if !%{bootstrap}
 BuildRequires:	pkgconfig(ddjvuapi)
 %endif
@@ -162,14 +164,15 @@ install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
 libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 
 %build
-# (tpg) force gcc in stead of clang
-export CC=gcc
-export CXX=g++
-
 #gw the format-string patch is incomplete:
 %define Werror_cflags %nil
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
+
+%ifarch %arm
+export CC=gcc
+export CXX=g++
+%endif
 
 # don't use icecream
 export PATH=/bin:/usr/bin
@@ -185,14 +188,14 @@ export PATH=/bin:/usr/bin
 	--with-magick_plus_plus \
 	--with-gslib \
 	--with-wmf \
-    --without-lcms \
-    --with-lcms2 \
+	--without-lcms \
+	--with-lcms2 \
 	--with-xml \
 	--without-dps \
 	--without-windows-font-dir \
 	--with-modules \
 	--with-perl \
-	--with-perl-options="INSTALLDIRS=vendor CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='-shared -L$PWD/magick/.libs'" \
+	--with-perl-options="INSTALLDIRS=vendor CCFLAGS='%{optflags}' CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='%{ldflags} -shared -L$PWD/magick/.libs'" \
 	--with-jp2 \
 	--with-gvc \
 	--with-lqr
