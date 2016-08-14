@@ -15,7 +15,7 @@
 # their "official" version
 %define rversion 7.0.2
 # their "minor" version
-%define minor_rev 0
+%define minor_rev 8
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
