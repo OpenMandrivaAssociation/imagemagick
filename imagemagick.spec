@@ -13,9 +13,9 @@
 %define qlev Q16
 
 # their "official" version
-%define rversion 6.9.2
+%define rversion 6.9.6
 # their "minor" version
-%define minor_rev 4
+%define minor_rev 2
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
@@ -162,10 +162,6 @@ install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
 libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 
 %build
-# (tpg) force gcc in stead of clang
-export CC=gcc
-export CXX=g++
-
 #gw the format-string patch is incomplete:
 %define Werror_cflags %nil
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
@@ -192,7 +188,7 @@ export PATH=/bin:/usr/bin
 	--without-windows-font-dir \
 	--with-modules \
 	--with-perl \
-	--with-perl-options="INSTALLDIRS=vendor CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='-shared -L$PWD/magick/.libs'" \
+	--with-perl-options="INSTALLDIRS=vendor CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='-shared %ldflags -L$PWD/magick/.libs'" \
 	--with-jp2 \
 	--with-gvc \
 	--with-lqr
