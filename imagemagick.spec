@@ -15,7 +15,7 @@
 # their "official" version
 %define rversion 6.9.6
 # their "minor" version
-%define minor_rev 2
+%define minor_rev 6
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
@@ -30,7 +30,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	%{rversion}.%{minor_rev}
-Release:	3
+Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
