@@ -15,16 +15,17 @@
 # their "official" version
 %define rversion 7.0.3
 # their "minor" version
-%define minor_rev 5
+%define minor_rev 9
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
 %define api	7
-%define major	0
-%define cppmajor 0
+%define major	1
+%define wandmajor 0
+%define cppmajor 1
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
 %define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
-%define libMagickWand %mklibname MagickWand %{api}.%{qlev} %{major}
+%define libMagickWand %mklibname MagickWand %{api}.%{qlev} %{wandmajor}
 %define devname %mklibname magick -d
 
 Summary:	An X application for displaying and manipulating images
@@ -311,7 +312,7 @@ EOF
 %{_libdir}/libMagickCore-%{api}.%{qlev}.so.%{major}*
 
 %files -n %{libMagickWand}
-%{_libdir}/libMagickWand-%{api}.%{qlev}.so.%{major}*
+%{_libdir}/libMagickWand-%{api}.%{qlev}.so.%{wandmajor}*
 
 %files -n %{devname}
 %{_includedir}/ImageMagick-%{api}
