@@ -13,9 +13,9 @@
 %define qlev Q16HDRI
 
 # their "official" version
-%define rversion 7.0.4
+%define rversion 7.0.5
 # their "minor" version
-%define minor_rev 0
+%define minor_rev 5
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
