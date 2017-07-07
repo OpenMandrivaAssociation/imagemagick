@@ -52,6 +52,7 @@ Patch19:	ImageMagick-libpath.diff
 BuildRequires:	chrpath
 BuildRequires:	ghostscript
 BuildRequires:	subversion
+BuildRequires:	atomic-devel
 BuildRequires:	bzip2-devel
 BuildRequires:	jbig-devel
 BuildRequires:	jpeg-devel
