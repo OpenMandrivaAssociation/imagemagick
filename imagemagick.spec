@@ -13,9 +13,9 @@
 %define qlev Q16HDRI
 
 # their "official" version
-%define rversion 7.0.5
+%define rversion 7.0.6
 # their "minor" version
-%define minor_rev 5
+%define minor_rev 0
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
@@ -237,10 +237,6 @@ ln -s libMagick++-%{api}.%{qlev}.so %{buildroot}%{_libdir}/libMagick++.so
 ln -s libMagickCore-%{api}.%{qlev}.so %{buildroot}%{_libdir}/libMagickCore.so
 ln -s libMagickWand-%{api}.%{qlev}.so %{buildroot}%{_libdir}/libMagickWand.so
 
-%multiarch_binaries %{buildroot}%{_bindir}/Magick++-config
-
-%multiarch_binaries %{buildroot}%{_bindir}/MagickCore-config
-
 # icons
 install -m 755 -d %{buildroot}%{_liconsdir} \
 	   %{buildroot}%{_iconsdir} \
@@ -312,8 +308,6 @@ EOF
 
 %files -n %{devname}
 %{_includedir}/ImageMagick-%{api}
-%{multiarch_bindir}/Magick++-config
-%{multiarch_bindir}/MagickCore-config
 %{_bindir}/Magick++-config
 %{_bindir}/MagickCore-config
 %{_bindir}/MagickWand-config
