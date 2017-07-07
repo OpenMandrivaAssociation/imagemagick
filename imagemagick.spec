@@ -44,10 +44,16 @@ Source11:	magick-icon_32x32.png
 Source12:	magick-icon_48x48.png
 Source13:	magick-icon_64x64.png
 Patch0:		perlmagick.rpath.patch
+# Libtool stinks -- let's not rely on .la files
+# to load modules...
+# This patch causes some crashes though, not quite ready yet.
+#Patch1:		ImageMagick-7.0.6-0-libtool-sucks.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
 #Patch20:	imagemagick-6.8.3-pkgconfig.patch
+
+Requires:	%{libMagickCore} = %{EVRD}
 
 BuildRequires:	chrpath
 BuildRequires:	ghostscript

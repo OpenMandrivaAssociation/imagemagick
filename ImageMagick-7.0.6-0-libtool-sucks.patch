@@ -1,0 +1,156 @@
+--- ImageMagick-7.0.6-0/configure.ac.0001~	2017-07-07 21:38:16.588811036 +0200
++++ ImageMagick-7.0.6-0/configure.ac	2017-07-07 21:38:16.546812184 +0200
+@@ -1699,7 +1699,7 @@ if test "$build_modules" != 'no' ; then
+       AC_MSG_RESULT([no -- some components failed test])
+       have_ltdl='no (failed tests)'
+     else
+-      LTDL_LIBS='-lltdl'
++      LTDL_LIBS='-ldl'
+       LIBS="$LTDL_LIBS $LIBS"
+       AC_DEFINE(LTDL_DELEGATE,1,[Define if using libltdl to support dynamically loadable modules])
+       AC_MSG_RESULT([yes])
+--- ImageMagick-7.0.6-0/MagickCore/module.c.0001~	2017-06-11 13:39:49.000000000 +0200
++++ ImageMagick-7.0.6-0/MagickCore/module.c	2017-07-07 21:40:27.687301757 +0200
+@@ -65,18 +65,14 @@
+ #include "MagickCore/utility.h"
+ #include "MagickCore/utility-private.h"
+ #if defined(MAGICKCORE_MODULES_SUPPORT)
+-#if defined(MAGICKCORE_LTDL_DELEGATE)
+-#include "ltdl.h"
+-typedef lt_dlhandle ModuleHandle;
+-#else
++#include <dlfcn.h>
+ typedef void *ModuleHandle;
+-#endif
+ 
+ /*
+   Define declarations.
+ */
+ #if defined(MAGICKCORE_LTDL_DELEGATE)
+-#  define ModuleGlobExpression "*.la"
++#  define ModuleGlobExpression "*.so"
+ #else
+ #  if defined(_DEBUG)
+ #    define ModuleGlobExpression "IM_MOD_DB_*.dll"
+@@ -881,9 +877,6 @@ static MagickBooleanType IsModuleTreeIns
+           if (status == MagickFalse)
+             ThrowFatalException(ResourceLimitFatalError,
+               "MemoryAllocationFailed");
+-          if (lt_dlinit() != 0)
+-            ThrowFatalException(ModuleFatalError,
+-              "UnableToInitializeModuleLoader");
+         }
+       UnlockSemaphoreInfo(module_semaphore);
+     }
+@@ -979,11 +972,11 @@ MagickExport MagickBooleanType InvokeDyn
+   /*
+     Open the module.
+   */
+-  handle=(ModuleHandle) lt_dlopen(path);
++  handle=(ModuleHandle) dlopen(path, RTLD_NOW|RTLD_GLOBAL);
+   if (handle == (ModuleHandle) NULL)
+     {
+       (void) ThrowMagickException(exception,GetMagickModule(),ModuleError,
+-        "UnableToLoadModule","'%s': %s",name,lt_dlerror());
++        "UnableToLoadModule","'%s': %s",name,dlerror());
+       return(MagickFalse);
+     }
+   /*
+@@ -999,10 +992,10 @@ MagickExport MagickBooleanType InvokeDyn
+     Execute the module.
+   */
+   ClearMagickException(exception);
+-  image_filter=(ImageFilterHandler *) lt_dlsym(handle,name);
++  image_filter=(ImageFilterHandler *) dlsym(handle,name);
+   if (image_filter == (ImageFilterHandler *) NULL)
+     (void) ThrowMagickException(exception,GetMagickModule(),ModuleError,
+-      "UnableToLoadModule","'%s': %s",name,lt_dlerror());
++      "UnableToLoadModule","'%s': %s",name,dlerror());
+   else
+     {
+       size_t
+@@ -1023,9 +1016,9 @@ MagickExport MagickBooleanType InvokeDyn
+   /*
+     Close the module.
+   */
+-  if (lt_dlclose(handle) != 0)
++  if (dlclose(handle) != 0)
+     (void) ThrowMagickException(exception,GetMagickModule(),ModuleWarning,
+-      "UnableToCloseModule","'%s': %s",name,lt_dlerror());
++      "UnableToCloseModule","'%s': %s",name,dlerror());
+   return(exception->severity < ErrorException ? MagickTrue : MagickFalse);
+ }
+ 
+@@ -1260,11 +1253,11 @@ MagickPrivate MagickBooleanType OpenModu
+   */
+   (void) LogMagickEvent(ModuleEvent,GetMagickModule(),
+     "Opening module at path \"%s\"",path);
+-  handle=(ModuleHandle) lt_dlopen(path);
++  handle=(ModuleHandle) dlopen(path, RTLD_NOW|RTLD_GLOBAL);
+   if (handle == (ModuleHandle) NULL)
+     {
+       (void) ThrowMagickException(exception,GetMagickModule(),ModuleError,
+-        "UnableToLoadModule","'%s': %s",path,lt_dlerror());
++        "UnableToLoadModule","'%s': %s",path,dlerror());
+       return(MagickFalse);
+     }
+   /*
+@@ -1278,11 +1271,11 @@ MagickPrivate MagickBooleanType OpenModu
+     Define RegisterFORMATImage method.
+   */
+   TagToModuleName(module_name,"Register%sImage",name);
+-  module_info->register_module=(size_t (*)(void)) lt_dlsym(handle,name);
++  module_info->register_module=(size_t (*)(void)) dlsym(handle,name);
+   if (module_info->register_module == (size_t (*)(void)) NULL)
+     {
+       (void) ThrowMagickException(exception,GetMagickModule(),ModuleError,
+-        "UnableToRegisterImageFormat","'%s': %s",module_name,lt_dlerror());
++        "UnableToRegisterImageFormat","'%s': %s",module_name,dlerror());
+       return(MagickFalse);
+     }
+   (void) LogMagickEvent(ModuleEvent,GetMagickModule(),
+@@ -1292,11 +1285,11 @@ MagickPrivate MagickBooleanType OpenModu
+     Define UnregisterFORMATImage method.
+   */
+   TagToModuleName(module_name,"Unregister%sImage",name);
+-  module_info->unregister_module=(void (*)(void)) lt_dlsym(handle,name);
++  module_info->unregister_module=(void (*)(void)) dlsym(handle,name);
+   if (module_info->unregister_module == (void (*)(void)) NULL)
+     {
+       (void) ThrowMagickException(exception,GetMagickModule(),ModuleError,
+-        "UnableToRegisterImageFormat","'%s': %s",module_name,lt_dlerror());
++        "UnableToRegisterImageFormat","'%s': %s",module_name,dlerror());
+       return(MagickFalse);
+     }
+   (void) LogMagickEvent(ModuleEvent,GetMagickModule(),
+@@ -1446,7 +1439,7 @@ static void TagToCoderModuleName(const c
+   (void) LogMagickEvent(TraceEvent,GetMagickModule(),"%s",tag);
+   assert(name != (char *) NULL);
+ #if defined(MAGICKCORE_LTDL_DELEGATE)
+-  (void) FormatLocaleString(name,MagickPathExtent,"%s.la",tag);
++  (void) FormatLocaleString(name,MagickPathExtent,"%s.so",tag);
+   (void) LocaleLower(name);
+ #else
+ #if defined(MAGICKCORE_WINDOWS_SUPPORT)
+@@ -1499,7 +1492,7 @@ static void TagToFilterModuleName(const
+ #elif !defined(MAGICKCORE_LTDL_DELEGATE)
+   (void) FormatLocaleString(name,MagickPathExtent,"%s.dll",tag);
+ #else
+-  (void) FormatLocaleString(name,MagickPathExtent,"%s.la",tag);
++  (void) FormatLocaleString(name,MagickPathExtent,"%s.so",tag);
+ #endif
+ }
+ 
+@@ -1594,10 +1587,10 @@ static MagickBooleanType UnregisterModul
+   if (module_info->unregister_module == NULL)
+     return(MagickTrue);
+   module_info->unregister_module();
+-  if (lt_dlclose((ModuleHandle) module_info->handle) != 0)
++  if (dlclose((ModuleHandle) module_info->handle) != 0)
+     {
+       (void) ThrowMagickException(exception,GetMagickModule(),ModuleWarning,
+-        "UnableToCloseModule","'%s': %s",module_info->tag,lt_dlerror());
++        "UnableToCloseModule","'%s': %s",module_info->tag,dlerror());
+       return(MagickFalse);
+     }
+   return(MagickTrue);
