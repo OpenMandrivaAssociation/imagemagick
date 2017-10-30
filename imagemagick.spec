@@ -13,15 +13,15 @@
 %define qlev Q16
 
 # their "official" version
-%define rversion 6.9.6
+%define rversion 6.9.9
 # their "minor" version
-%define minor_rev 6
+%define minor_rev 20
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
 %define api	6
-%define major	2
-%define cppmajor 6
+%define major	5
+%define cppmajor 8
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
 %define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
 %define libMagickWand %mklibname MagickWand %{api}.%{qlev} %{major}
@@ -222,7 +222,7 @@ rm -rf installed_docs; mv %{buildroot}/installed_docs .
 
 # Remove unpackaged files
 rm -f %{buildroot}%{_libdir}/*.la
-rm -f %{buildroot}%{_libdir}/libltdl* 
+rm -f %{buildroot}%{_libdir}/libltdl*
 
 # create compatible symlinks
 ln -s libMagick++-%{api}.%{qlev}.so %{buildroot}%{_libdir}/libMagick++.so
