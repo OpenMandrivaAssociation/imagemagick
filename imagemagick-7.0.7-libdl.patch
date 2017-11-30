@@ -1,0 +1,11 @@
+--- ImageMagick-7.0.7-12/utilities/Makefile.am.omv~	2017-11-30 14:06:29.387834719 +0100
++++ ImageMagick-7.0.7-12/utilities/Makefile.am	2017-11-30 14:06:41.126859472 +0100
+@@ -21,7 +21,7 @@ UTILITIES_XFAIL_TESTS = \
+   $(UTILITIES_TTF_XFAIL_TESTS) \
+   $(UTILITIES_XML_XFAIL_TESTS)
+ 
+-utilities_magick_LDADD	= $(MAGICKCORE_LIBS) $(MAGICKWAND_LIBS)
++utilities_magick_LDADD	= $(MAGICKCORE_LIBS) $(MAGICKWAND_LIBS) -ldl
+ utilities_magick_LDFLAGS	= $(LDFLAGS)
+ utilities_magick_SOURCES	= utilities/magick.c
+ 

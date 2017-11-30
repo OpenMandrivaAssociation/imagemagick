@@ -13,9 +13,9 @@
 %define qlev Q16HDRI
 
 # their "official" version
-%define rversion 7.0.7
+%define rversion %(echo %{version} |cut -d. -f1-3)
 # their "minor" version
-%define minor_rev 0
+%define minor_rev %(echo %{version} |cut -d. -f4)
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
@@ -30,7 +30,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	%{rversion}.%{minor_rev}
+Version:	7.0.7.12
 Release:	1
 License:	BSD-like
 Group:		Graphics
@@ -48,6 +48,7 @@ Patch0:		perlmagick.rpath.patch
 # to load modules...
 # This patch causes some crashes though, not quite ready yet.
 #Patch1:		ImageMagick-7.0.6-0-libtool-sucks.patch
+Patch2:		imagemagick-7.0.7-libdl.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
