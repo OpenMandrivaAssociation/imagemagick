@@ -20,9 +20,9 @@
 %define dversion %{rversion}-%{minor_rev}
 
 %define api	7
-%define major	4
-%define wandmajor 4
-%define cppmajor 3
+%define major	5
+%define wandmajor 5
+%define cppmajor 4
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
 %define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
 %define libMagickWand %mklibname MagickWand %{api}.%{qlev} %{wandmajor}
@@ -30,7 +30,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.0.7.13
+Version:	7.0.7.14
 Release:	1
 License:	BSD-like
 Group:		Graphics
