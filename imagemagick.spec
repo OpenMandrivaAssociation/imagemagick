@@ -30,7 +30,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.0.7.18
+Version:	7.0.7.19
 Release:	1
 License:	BSD-like
 Group:		Graphics
@@ -49,6 +49,7 @@ Patch0:		perlmagick.rpath.patch
 # This patch causes some crashes though, not quite ready yet.
 #Patch1:		ImageMagick-7.0.6-0-libtool-sucks.patch
 Patch2:		imagemagick-7.0.7-libdl.patch
+Patch3:		imagemagick-7.0.7-openmp-libraries.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
@@ -178,7 +179,7 @@ libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 
-%ifarch %arm
+%ifarch %{arm}
 export CC=gcc
 export CXX=g++
 %endif
@@ -197,6 +198,7 @@ export PATH=/bin:/usr/bin
 	--with-magick_plus_plus \
 	--with-gslib \
 	--with-wmf \
+	--with-gcc-arch=generic \
 	--without-lcms \
 	--with-lcms2 \
 	--with-xml \

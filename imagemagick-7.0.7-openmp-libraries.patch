@@ -1,0 +1,17 @@
+--- ImageMagick-7.0.7-19/configure.ac.omv~	2018-01-02 13:07:25.729737477 +0100
++++ ImageMagick-7.0.7-19/configure.ac	2018-01-02 13:13:10.648059607 +0100
+@@ -1415,12 +1415,12 @@ if test "$enable_openmp" != 'no'; then
+     # Clang (passes for GCC but uses different OpenMP implementation)
+     if test "x$LIB_OMP" = x ; then
+       if $CC --version 2>&1 | grep clang > /dev/null ; then
+-        AC_CHECK_LIB(omp,GOMP_parallel_start,LIB_OMP="-lomp",,)
++        AC_CHECK_LIB(omp,GOMP_parallel_start,LIB_OMP="-fopenmp",,)
+       fi
+     fi
+     # GCC
+     if test "x$GOMP_LIBS" = x ; then
+-      AC_CHECK_LIB(gomp,GOMP_parallel_start,GOMP_LIBS="-lgomp",,)
++      AC_CHECK_LIB(gomp,GOMP_parallel_start,GOMP_LIBS="-fopenmp",,)
+     fi
+   else
+     # Sun CC
