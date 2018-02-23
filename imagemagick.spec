@@ -2,6 +2,7 @@
 # ImageMagick actually uses libtool to load its modules
 %define dont_remove_libtool_files 1
 %define build_test 0
+
 %define bootstrap 0
 
 # some other funny version
@@ -30,7 +31,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.0.7.22
+Version:	7.0.7.23
 Release:	1
 License:	BSD-like
 Group:		Graphics
