@@ -3,7 +3,7 @@
 %define dont_remove_libtool_files 1
 %define build_test 0
 
-%define bootstrap 0
+%bcond_without bootstrap
 
 # some other funny version
 # (aw) from the docs: Versions with Q8 in the name are 8 bits-per-pixel
@@ -21,8 +21,8 @@
 %define dversion %{rversion}-%{minor_rev}
 
 %define api	7
-%define major	5
-%define wandmajor 5
+%define major	6
+%define wandmajor 6
 %define cppmajor 4
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
 %define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
@@ -84,7 +84,7 @@ BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libwebp)
-%if !%{bootstrap}
+%if ! %{with bootstrap}
 BuildRequires:	pkgconfig(ddjvuapi)
 %endif
 
