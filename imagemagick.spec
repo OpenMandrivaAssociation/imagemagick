@@ -1,3 +1,9 @@
+%ifarch %{ix86}
+# Undefined reference to __atomic_load at build time
+# when building with clang 7.0-331886
+%global optflags %{optflags} -rtlib=compiler-rt
+%endif
+
 %define _disable_ld_no_undefined 1
 # ImageMagick actually uses libtool to load its modules
 %define dont_remove_libtool_files 1
@@ -179,13 +185,6 @@ libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 %define Werror_cflags %nil
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
-
-%ifarch %{ix86}
-# FIXME Undefined reference to __atomic_load at build time
-# when building with clang 7.0-331886
-export CC=gcc
-export CXX=g++
-%endif
 
 # don't use icecream
 export PATH=/bin:/usr/bin
