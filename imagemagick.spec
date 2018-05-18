@@ -31,7 +31,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.0.7.31
+Version:	7.0.7.33
 Release:	1
 License:	BSD-like
 Group:		Graphics
@@ -180,7 +180,9 @@ libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 
-%ifarch %{arm}
+%ifarch %{ix86}
+# FIXME Undefined reference to __atomic_load at build time
+# when building with clang 7.0-331886
 export CC=gcc
 export CXX=g++
 %endif
