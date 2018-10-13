@@ -37,7 +37,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.0.8.2
+Version:	7.0.8.12
 Release:	1
 License:	BSD-like
 Group:		Graphics
@@ -55,7 +55,7 @@ Patch0:		perlmagick.rpath.patch
 # to load modules...
 # This patch causes some crashes though, not quite ready yet.
 #Patch1:		ImageMagick-7.0.6-0-libtool-sucks.patch
-Patch2:		imagemagick-7.0.7-libdl.patch
+#Patch2:		imagemagick-7.0.7-libdl.patch
 Patch3:		imagemagick-7.0.7-openmp-libraries.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
