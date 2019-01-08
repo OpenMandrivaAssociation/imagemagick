@@ -4,6 +4,8 @@
 %global optflags %{optflags} -rtlib=compiler-rt
 %endif
 
+%global optflags %{optflags} -O3
+
 %define _disable_ld_no_undefined 1
 # ImageMagick actually uses libtool to load its modules
 %define dont_remove_libtool_files 1
@@ -26,8 +28,8 @@
 # the full file version
 %define dversion %{rversion}-%{minor_rev}
 
-%define api	7
-%define major	6
+%define api 7
+%define major 6
 %define wandmajor 6
 %define cppmajor 4
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
@@ -38,7 +40,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	7.0.8.21
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
@@ -68,12 +70,14 @@ BuildRequires:	chrpath
 BuildRequires:	ghostscript
 BuildRequires:	subversion
 BuildRequires:	atomic-devel
-BuildRequires:	bzip2-devel
+BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	jbig-devel
-BuildRequires:	jpeg-devel
+BuildRequires:	pkgconfig(libjpeg)
+BuildRequires:	pkgconfig(libzstd)
 BuildRequires:	libtool-devel
 BuildRequires:	libwmf-devel
 BuildRequires:	perl-devel
+BuildRequires:	pkgconfig(libraw_r)
 BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(fontconfig)
 BuildRequires:	pkgconfig(freetype2)
@@ -90,6 +94,7 @@ BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libwebp)
+BuildRequires:	pkgconfig(libopenjp2)
 %if ! %{with bootstrap}
 BuildRequires:	pkgconfig(ddjvuapi)
 %endif
@@ -174,7 +179,7 @@ This package contains HTML/PDF documentation of %{name}.
 
 %prep
 %setup -qn ImageMagick-%{rversion}-%{minor_rev}
-%apply_patches
+%autopatch -p1
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
@@ -195,29 +200,31 @@ export PATH=/bin:/usr/bin
 	--with-pic \
 	--enable-shared \
 	--enable-fast-install \
-	--disable-ltdl-install \
 	--with-threads \
 	--with-magick_plus_plus \
 	--with-gslib \
 	--with-wmf \
 	--with-gcc-arch=generic \
-	--without-lcms \
-	--with-lcms2 \
+	--with-lcms=yes \
 	--with-xml \
 	--without-dps \
 	--without-windows-font-dir \
 	--with-modules \
 	--with-perl \
 	--with-perl-options="INSTALLDIRS=vendor CCFLAGS='%{optflags}' CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='%{ldflags} -shared -L$PWD/magick/.libs -L/lib'" \
-	--with-jp2 \
+	--with-openjp2=yes \
 	--with-gvc \
-	--with-lqr
+	--with-lqr \
+	--with-fftw=yes \
+	--with-zstd=yes \
+	--with-raw=yes \
+	--with-rsvg=yes
 
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
 sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
-%make
+%make_build
 
 %if %{build_test}
 %check
@@ -235,7 +242,7 @@ make check
 
 %install
 # (Abel) set LD_RUN_PATH to null, to avoid adding rpath to perlmagick module
-%makeinstall_std LD_RUN_PATH="" pkgdocdir=/installed_docs
+%make_install LD_RUN_PATH="" pkgdocdir=/installed_docs
 
 # fix docs inclusion (fix an unknown new rpm bug)
 rm -rf installed_docs; mv %{buildroot}/installed_docs .
