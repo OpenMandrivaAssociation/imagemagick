@@ -77,6 +77,7 @@ BuildRequires:	pkgconfig(libzstd)
 BuildRequires:	libtool-devel
 BuildRequires:	libwmf-devel
 BuildRequires:	perl-devel
+BuildRequires:	xdg-utils
 BuildRequires:	pkgconfig(libraw_r)
 BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(fontconfig)
@@ -90,6 +91,8 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(lqr-1)
+BuildRequires:	pkgconfig(ice)
+BuildRequires:	pkgconfig(xt)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xext)
 BuildRequires:	pkgconfig(zlib)
