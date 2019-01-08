@@ -98,6 +98,8 @@ BuildRequires:	pkgconfig(xext)
 BuildRequires:	pkgconfig(zlib)
 BuildRequires:	pkgconfig(libwebp)
 BuildRequires:	pkgconfig(libopenjp2)
+BuildRequires:	pkgconfig(fftw3)
+BuildRequires:	pkgconfig(OpenEXR)
 %if ! %{with bootstrap}
 BuildRequires:	pkgconfig(ddjvuapi)
 %endif
