@@ -5,7 +5,7 @@
 %endif
 
 # (tpg) use LLVM/polly for polyhedra optimization and automatic vector code generation
-%global optflags %{optflags} -O3 -mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-opt-fusion=max -mllvm -polly-vectorizer=stripmine -mllvm -polly-detect-keep-going
+%global optflags %{optflags} -O3 -mllvm -polly -mllvm -polly-vectorizer=stripmine -mllvm -polly-detect-keep-going
 
 %define _disable_ld_no_undefined 1
 # ImageMagick actually uses libtool to load its modules
