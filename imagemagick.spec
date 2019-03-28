@@ -4,7 +4,8 @@
 %global optflags %{optflags} -rtlib=compiler-rt
 %endif
 
-%global optflags %{optflags} -O3
+# (tpg) use LLVM/polly for polyhedra optimization and automatic vector code generation
+%global optflags %{optflags} -O3 -mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-opt-fusion=max -mllvm -polly-ast-use-context -mllvm -polly-vectorizer=stripmine -mllvm -polly-detect-keep-going
 
 %define _disable_ld_no_undefined 1
 # ImageMagick actually uses libtool to load its modules
@@ -40,7 +41,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	7.0.8.35
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
@@ -65,7 +66,7 @@ Patch19:	ImageMagick-libpath.diff
 #Patch20:	imagemagick-6.8.3-pkgconfig.patch
 
 Requires:	%{libMagickCore} = %{EVRD}
-
+BuildRequires:	llvm-polly
 BuildRequires:	chrpath
 BuildRequires:	ghostscript
 BuildRequires:	subversion
