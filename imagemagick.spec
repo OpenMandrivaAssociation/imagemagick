@@ -69,7 +69,6 @@ Requires:	%{libMagickCore} = %{EVRD}
 BuildRequires:	llvm-polly
 BuildRequires:	chrpath
 BuildRequires:	ghostscript
-BuildRequires:	subversion
 BuildRequires:	atomic-devel
 BuildRequires:	pkgconfig(bzip2)
 BuildRequires:	jbig-devel
