@@ -88,7 +88,9 @@ BuildRequires:	pkgconfig(libgvc)
 BuildRequires:	pkgconfig(liblzma)
 BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(libpng)
+%ifnarch %{riscv}
 BuildRequires:	pkgconfig(librsvg-2.0)
+%endif
 BuildRequires:	pkgconfig(libxml-2.0)
 BuildRequires:	pkgconfig(lqr-1)
 BuildRequires:	pkgconfig(ice)
@@ -222,8 +224,10 @@ export PATH=/bin:/usr/bin
 	--with-lqr \
 	--with-fftw=yes \
 	--with-zstd=yes \
-	--with-raw=yes \
-	--with-rsvg=yes
+%ifnarch %{riscv}
+	--with-rsvg=yes \
+%endif
+	--with-raw=yes
 
 # Disable rpath
 sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
