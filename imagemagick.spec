@@ -32,8 +32,8 @@
 %define dversion %{rversion}-%{minor_rev}
 
 %define api 7
-%define major 6
-%define wandmajor 6
+%define major 7
+%define wandmajor 7
 %define cppmajor 4
 %define libMagickpp %mklibname Magick++ %{api}.%{qlev} %{cppmajor}
 %define libMagickCore %mklibname MagickCore %{api}.%{qlev} %{major}
@@ -42,12 +42,12 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.0.8.60
+Version:	7.0.9.18
 Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
-Source0:	ftp://ftp.imagemagick.org/pub/ImageMagick/ImageMagick-%{dversion}.tar.xz
+Source0:	https://github.com/ImageMagick/ImageMagick/archive/%{dversion}/ImageMagick-%{dversion}.tar.gz
 Source1:	ImageMagick.pdf.bz2
 Source2:	%{name}.rpmlintrc
 # re-scaled from ftp://ftp.imagemagick.org/pub/ImageMagick/images/magick-icon.png
