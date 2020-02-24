@@ -5,8 +5,11 @@
 %endif
 
 # (tpg) use LLVM/polly for polyhedra optimization and automatic vector code generation
+# Temporarily disabled because of https://bugs.llvm.org/show_bug.cgi?id=45001 and
+# libtool stripping -Xclang and moving LLVMPolly.so to a wrong location if the
+# workaround is applied.
 %ifnarch %{riscv}
-%global optflags %{optflags} -O3 -mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-vectorizer=stripmine -mllvm -polly-detect-keep-going
+#global optflags %{optflags} -O3 -mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-vectorizer=stripmine -mllvm -polly-detect-keep-going
 %endif
 
 %define _disable_ld_no_undefined 1
@@ -220,7 +223,7 @@ export PATH=/bin:/usr/bin
 	--without-windows-font-dir \
 	--with-modules \
 	--with-perl \
-	--with-perl-options="INSTALLDIRS=vendor CCFLAGS='%{optflags}' CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='%{ldflags} -shared -L$PWD/magick/.libs -L/lib'" \
+	--with-perl-options="INSTALLDIRS=vendor CCFLAGS='%{optflags}' CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='%{ldflags} -shared -L$PWD/magick/.libs'" \
 	--with-openjp2=yes \
 	--with-gvc \
 	--with-lqr \
