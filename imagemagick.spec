@@ -202,6 +202,9 @@ git config user.email "root@openmandriva.org"
 git add *
 git commit -am "OpenMandriva %{version}-%{release}"
 
+# Wipe bundled libtool mess, it isn't LTO aware
+rm -rf config/lt* m4/libtool.m4
+
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
 libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
