@@ -83,6 +83,8 @@ BuildRequires:	libtool-devel
 BuildRequires:	libwmf-devel
 BuildRequires:	perl-devel
 BuildRequires:	xdg-utils
+# To make aclocal happy
+BuildRequires:	git-core
 BuildRequires:	pkgconfig(libraw_r)
 BuildRequires:	pkgconfig(cairo)
 BuildRequires:	pkgconfig(fontconfig)
