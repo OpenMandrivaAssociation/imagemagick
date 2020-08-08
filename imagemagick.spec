@@ -195,6 +195,13 @@ This package contains HTML/PDF documentation of %{name}.
 %setup -qn ImageMagick-%{rversion}-%{minor_rev}
 %autopatch -p1
 
+# automake looks for a git id...
+git init
+git config user.name "OpenMandriva build system"
+git config user.email "root@openmandriva.org"
+git add *
+git commit -am "OpenMandriva %{version}-%{release}"
+
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
 libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
