@@ -210,6 +210,10 @@ install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
 libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 
 %build
+%ifarch %ix86
+export CC=gcc
+export CXX=g++
+%endif
 #gw the format-string patch is incomplete:
 %define Werror_cflags %nil
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
