@@ -1,8 +1,8 @@
-%ifarch %{ix86}
+#ifarch %{ix86}
 # Undefined reference to __atomic_load at build time
 # when building with clang 7.0-331886
-%global optflags %{optflags} -rtlib=compiler-rt
-%endif
+#global optflags %{optflags} -rtlib=compiler-rt
+#endif
 
 # (tpg) use LLVM/polly for polyhedra optimization and automatic vector code generation
 # Temporarily disabled because of https://bugs.llvm.org/show_bug.cgi?id=45001 and
@@ -46,7 +46,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	7.0.10.25
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
@@ -210,6 +210,10 @@ install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
 libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 
 %build
+%ifarch %{ix86}
+export CC=gcc
+export CXX=g++
+%endif
 #gw the format-string patch is incomplete:
 %define Werror_cflags %nil
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
