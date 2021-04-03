@@ -45,7 +45,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.0.11.2
+Version:	7.0.11.6
 Release:	1
 License:	BSD-like
 Group:		Graphics
@@ -95,6 +95,7 @@ BuildRequires:	pkgconfig(libgvc)
 BuildRequires:	pkgconfig(liblzma)
 BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(libpng)
+BuildRequires:	pkgconfig(libjxl)
 %ifnarch %{riscv}
 BuildRequires:	pkgconfig(librsvg-2.0)
 %endif
@@ -244,6 +245,7 @@ export PATH=/bin:/usr/bin
 	--with-gvc \
 	--with-lqr \
 	--with-fftw=yes \
+	--with-jxl=yes \
 	--with-zstd=yes \
 %ifnarch %{riscv}
 	--with-rsvg=yes \
