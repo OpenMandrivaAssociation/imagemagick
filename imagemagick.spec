@@ -244,7 +244,7 @@ export PATH=/bin:/usr/bin
 	--with-openjp2=yes \
 	--with-gvc \
 	--with-lqr \
-	--with-fftw=yes \
+	--with-fftw=no \
 	--with-jxl=yes \
 	--with-zstd=yes \
 %ifnarch %{riscv}
