@@ -45,7 +45,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.1.0.24
+Version:	7.1.0.33
 Release:	1
 License:	BSD-like
 Group:		Graphics
@@ -373,6 +373,6 @@ EOF
 %{_mandir}/man3*/*::*.3pm*
 
 %files doc
-%doc ImageMagick.pdf ChangeLog LICENSE NEWS* NOTICE
+%doc ImageMagick.pdf LICENSE NEWS* NOTICE
 %doc QuickStart.txt installed_docs/*
 
