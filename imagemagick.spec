@@ -5,11 +5,8 @@
 #endif
 
 # (tpg) use LLVM/polly for polyhedra optimization and automatic vector code generation
-# Temporarily disabled because of https://bugs.llvm.org/show_bug.cgi?id=45001 and
-# libtool stripping -Xclang and moving LLVMPolly.so to a wrong location if the
-# workaround is applied.
 %ifnarch %{riscv}
-#global optflags %{optflags} -O3 -mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-vectorizer=stripmine -mllvm -polly-detect-keep-going
+%global optflags %{optflags} -O3 -mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-isl-arg=--no-schedule-serialize-sccs -mllvm -polly-ast-use-context -mllvm -polly-detect-keep-going -mllvm -polly-vectorizer=stripmine -mllvm -polly-invariant-load-hoisting
 %endif
 
 %define _disable_ld_no_undefined 1
@@ -46,7 +43,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	7.1.0.45
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
@@ -124,40 +121,40 @@ packages in Mandriva Linux: curl enscript ffmpeg ghostscript ghostscript-X gimp
 gnuplot graphviz html2ps mplayer ncompress netpbm sane-backends tetex-dvips
 transfig ufraw xdg-utils zip autotrace povray
 
-%package 	desktop
+%package desktop
 Summary:	ImageMagick menus
 Group:		Graphics
 Requires:	xterm
 
-%description	desktop
+%description desktop
 This package contains the menu and .desktop entries to run the "display"
 command from the menu.
 
-%package -n	%{libMagickpp}
+%package -n %{libMagickpp}
 Summary:	ImageMagick libraries
 Group:		System/Libraries
 Obsoletes:	%{_lib}magick6 < 6.8.5.6-1
 
-%description -n	%{libMagickpp}
+%description -n %{libMagickpp}
 This package contains a library for %{name}.
 
-%package -n	%{libMagickCore}
+%package -n %{libMagickCore}
 Summary:	ImageMagick libraries
 Group:		System/Libraries
 Conflicts:	%{_lib}magick6 < 6.8.5.6-1
 
-%description -n	%{libMagickCore}
+%description -n %{libMagickCore}
 This package contains a library for %{name}.
 
-%package -n	%{libMagickWand}
+%package -n %{libMagickWand}
 Summary:	ImageMagick libraries
 Group:		System/Libraries
 Conflicts:	%{_lib}magick6 < 6.8.5.6-1
 
-%description -n	%{libMagickWand}
+%description -n %{libMagickWand}
 This package contains a library for %{name}.
 
-%package -n	%{devname}
+%package -n %{devname}
 Summary:	Development libraries and header files for ImageMagick app development
 Group:		Development/C
 Requires:	%{libMagickpp} = %{version}-%{release}
@@ -165,7 +162,7 @@ Requires:	%{libMagickCore} = %{version}-%{release}
 Requires:	%{libMagickWand} = %{version}-%{release}
 Provides:	%{name}-devel = %{version}-%{release}
 
-%description -n	%{devname}
+%description -n %{devname}
 If you want to create applications that will use ImageMagick code or APIs,
 you'll need to install these packages as well as ImageMagick. These additional
 packages aren't necessary if you simply want to use ImageMagick, however.
@@ -173,28 +170,27 @@ packages aren't necessary if you simply want to use ImageMagick, however.
 ImageMagick-devel is an addition to ImageMagick which includes development
 libraries and header files necessary to develop applications.
 
-%package -n	perl-Image-Magick
+%package -n perl-Image-Magick
 Summary:	Libraries and modules for access to ImageMagick from perl
 Group:		Development/Perl
 Requires:	%{name} = %{version}
 Requires:	graphviz
 Requires:	libwmf
 
-%description -n	perl-Image-Magick
+%description -n perl-Image-Magick
 This is the ImageMagick perl support package. It includes perl modules and
 support files for access to ImageMagick library from perl.
 
-%package	doc
+%package doc
 Summary:	%{name} Documentation
 Group:		Books/Other
 BuildArch:	noarch
 
-%description	doc
+%description doc
 This package contains HTML/PDF documentation of %{name}.
 
 %prep
-%setup -qn ImageMagick-%{rversion}-%{minor_rev}
-%autopatch -p1
+%autosetup -n ImageMagick-%{rversion}-%{minor_rev} -p1
 
 # automake looks for a git id...
 git init
@@ -220,9 +216,6 @@ export CXX=g++
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 
-# don't use icecream
-export PATH=/bin:/usr/bin
-
 %configure \
 	--disable-static \
 	--docdir=%{_defaultdocdir}/imagemagick \
@@ -240,7 +233,7 @@ export PATH=/bin:/usr/bin
 	--without-windows-font-dir \
 	--with-modules \
 	--with-perl \
-	--with-perl-options="INSTALLDIRS=vendor CCFLAGS='%{optflags}' CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='%{ldflags} -shared -L$PWD/magick/.libs'" \
+	--with-perl-options="INSTALLDIRS=vendor CCFLAGS='%{optflags}' CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='%{build_ldflags} -shared -L$PWD/magick/.libs'" \
 	--with-openjp2=yes \
 	--with-gvc \
 	--with-lqr \
@@ -264,10 +257,10 @@ sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 %check
 # these tests require X
 if [ -f PerlMagick/t/x11/read.t ]; then
-	mv PerlMagick/t/x11/read.t PerlMagick/t/x11/read.t.disabled
+    mv PerlMagick/t/x11/read.t PerlMagick/t/x11/read.t.disabled
 fi
 if [ -f PerlMagick/t/x11/write.t ]; then
-	mv PerlMagick/t/x11/write.t PerlMagick/t/x11/write.t.disabled
+    mv PerlMagick/t/x11/write.t PerlMagick/t/x11/write.t.disabled
 fi
 #dlname=`grep "^dlname" Magick++/lib/.libs/libMagick++.la | cut -d\' -f2`
 #LD_PRELOAD="$PWD/Magick++/lib/.libs/$dlname" VERBOSE="1" make check
@@ -292,9 +285,9 @@ ln -s libMagickWand-%{api}.%{qlev}.so %{buildroot}%{_libdir}/libMagickWand.so
 
 # icons
 install -m 755 -d %{buildroot}%{_liconsdir} \
-	   %{buildroot}%{_iconsdir} \
-	   %{buildroot}%{_iconsdir}/hicolor/64x64/apps \
-           %{buildroot}%{_miconsdir}
+	    %{buildroot}%{_iconsdir} \
+	    %{buildroot}%{_iconsdir}/hicolor/64x64/apps \
+	    %{buildroot}%{_miconsdir}
 install -m 644 magick-icon_16x16.png %{buildroot}%{_miconsdir}/%{name}.png
 install -m 644 magick-icon_32x32.png %{buildroot}%{_iconsdir}/%{name}.png
 install -m 644 magick-icon_48x48.png %{buildroot}%{_liconsdir}/%{name}.png
@@ -339,8 +332,8 @@ EOF
 %{_libdir}/ImageMagick-%{rversion}/modules-%{qlev}/filters/*
 %{_libdir}/ImageMagick-%{rversion}/config-%{qlev}
 %{_datadir}/ImageMagick-%{api}
-%{_mandir}/man1/*
-%{_mandir}/man3/*
+%doc %{_mandir}/man1/*
+%doc %{_mandir}/man3/*
 %exclude %{_mandir}/man3/*::*.3pm*
 
 %files desktop
@@ -370,7 +363,7 @@ EOF
 %files -n perl-Image-Magick
 %{perl_vendorarch}/Image
 %{perl_vendorarch}/auto/Image
-%{_mandir}/man3*/*::*.3pm*
+%doc %{_mandir}/man3*/*::*.3pm*
 
 %files doc
 %doc ImageMagick.pdf LICENSE NEWS* NOTICE
