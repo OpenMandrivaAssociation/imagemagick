@@ -6,7 +6,8 @@
 
 # (tpg) use LLVM/polly for polyhedra optimization and automatic vector code generation
 %ifnarch %{riscv}
-%global optflags %{optflags} -O3 -mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-isl-arg=--no-schedule-serialize-sccs -mllvm -polly-ast-use-context -mllvm -polly-detect-keep-going -mllvm -polly-vectorizer=stripmine -mllvm -polly-invariant-load-hoisting
+%global optflags %{optflags} -O3 -mllvm -polly -mllvm -polly-run-dce -mllvm -polly-run-inliner -mllvm -polly-isl-arg=--no-schedule-serialize-sccs -mllvm -polly-ast-use-context -mllvm -polly-detect-keep-going -mllvm -polly-vectorizer=stripmine
+# "-mllvm -polly-invariant-load-hoisting" removed for now because of https://github.com/llvm/llvm-project/issues/57413
 %endif
 
 %define _disable_ld_no_undefined 1
@@ -42,8 +43,8 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.1.0.45
-Release:	2
+Version:	7.1.0.47
+Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
@@ -193,6 +194,7 @@ This package contains HTML/PDF documentation of %{name}.
 %autosetup -n ImageMagick-%{rversion}-%{minor_rev} -p1
 
 # automake looks for a git id...
+rm .gitignore
 git init
 git config user.name "OpenMandriva build system"
 git config user.email "root@openmandriva.org"
@@ -207,10 +209,6 @@ install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
 libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 
 %build
-%ifarch %{ix86}
-export CC=gcc
-export CXX=g++
-%endif
 #gw the format-string patch is incomplete:
 %define Werror_cflags %nil
 export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
