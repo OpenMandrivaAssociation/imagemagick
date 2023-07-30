@@ -43,12 +43,13 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.1.1.12
+Version:	7.1.1.15
 Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
-Source0:	https://github.com/ImageMagick/ImageMagick/archive/%{dversion}/ImageMagick-%{dversion}.tar.gz
+Source0:	https://imagemagick.org/archive/releases/ImageMagick-%{dversion}.tar.xz
+# Also:	https://github.com/ImageMagick/ImageMagick/archive/%{dversion}/ImageMagick-%{dversion}.tar.gz
 Source1:	ImageMagick.pdf.bz2
 Source2:	%{name}.rpmlintrc
 # re-scaled from ftp://ftp.imagemagick.org/pub/ImageMagick/images/magick-icon.png
@@ -61,7 +62,6 @@ Patch0:		perlmagick.rpath.patch
 # to load modules...
 # This patch causes some crashes though, not quite ready yet.
 #Patch1:		ImageMagick-7.0.6-0-libtool-sucks.patch
-Patch2:		ImageMagick-7.0.8-29-link-libdl.patch
 Patch3:		imagemagick-7.0.7-openmp-libraries.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
@@ -194,7 +194,7 @@ This package contains HTML/PDF documentation of %{name}.
 %autosetup -n ImageMagick-%{rversion}-%{minor_rev} -p1
 
 # automake looks for a git id...
-rm .gitignore
+rm -f .gitignore
 git init
 git config user.name "OpenMandriva build system"
 git config user.email "root@openmandriva.org"
