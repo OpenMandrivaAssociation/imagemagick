@@ -44,7 +44,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	7.1.1.15
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 Url:		http://www.imagemagick.org/
@@ -61,7 +61,7 @@ Patch0:		perlmagick.rpath.patch
 # Libtool stinks -- let's not rely on .la files
 # to load modules...
 # This patch causes some crashes though, not quite ready yet.
-#Patch1:		ImageMagick-7.0.6-0-libtool-sucks.patch
+Patch1:		ImageMagick-7.0.6-0-libtool-sucks.patch
 Patch3:		imagemagick-7.0.7-openmp-libraries.patch
 Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
@@ -275,6 +275,7 @@ rm -rf installed_docs; mv %{buildroot}/installed_docs .
 # Remove unpackaged files
 rm -f %{buildroot}%{_libdir}/*.la
 rm -f %{buildroot}%{_libdir}/libltdl* 
+rm -f %{buildroot}%{_libdir}/ImageMagick-*/modules-*/*/*.la
 
 # create compatible symlinks
 ln -s libMagick++-%{api}.%{qlev}.so %{buildroot}%{_libdir}/libMagick++.so
