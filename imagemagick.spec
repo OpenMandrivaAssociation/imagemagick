@@ -43,7 +43,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.1.1.17
+Version:	7.1.1.18
 Release:	1
 License:	BSD-like
 Group:		Graphics
