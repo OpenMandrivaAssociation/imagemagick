@@ -1,18 +1,19 @@
-diff -up ImageMagick-7.0.11-2/configure.ac.3~ ImageMagick-7.0.11-2/configure.ac
---- ImageMagick-7.0.11-2/configure.ac.3~	2021-03-04 14:14:59.144464239 +0100
-+++ ImageMagick-7.0.11-2/configure.ac	2021-03-04 14:15:56.113596235 +0100
-@@ -1263,12 +1263,12 @@ if test "$enable_openmp" != 'no'; then
-     # Clang (passes for GCC but uses different OpenMP implementation)
-     if test "x$LIB_OMP" = x ; then
+diff -up ImageMagick-7.1.1-22/configure.ac.3~ ImageMagick-7.1.1-22/configure.ac
+--- ImageMagick-7.1.1-22/configure.ac.3~	2023-12-04 16:07:24.787778156 +0100
++++ ImageMagick-7.1.1-22/configure.ac	2023-12-06 20:17:38.323676310 +0100
+@@ -1280,13 +1280,13 @@ if test "${OPENMP_ENABLED}" == 'yes'; th
+     if test "x$GOMP_LIBS" = x ; then
        if $CC --version 2>&1 | grep clang > /dev/null ; then
--        AC_CHECK_LIB([omp],[GOMP_parallel_start],[LIB_OMP="-lomp"],[],[])
-+        AC_CHECK_LIB([omp],[GOMP_parallel_start],[LIB_OMP="-fopenmp"],[],[])
+         AC_COMPILE_IFELSE([ AC_LANG_PROGRAM([#include <omp.h>], [
+-          omp_set_num_threads(1);])],[GOMP_LIBS="-lomp"],[])
++          omp_set_num_threads(1);])],[GOMP_LIBS="-fopenmp"],[])
        fi
      fi
      # GCC
      if test "x$GOMP_LIBS" = x ; then
--      AC_CHECK_LIB([gomp],[GOMP_parallel_start],[GOMP_LIBS="-lgomp"],[],[])
-+      AC_CHECK_LIB([gomp],[GOMP_parallel_start],[GOMP_LIBS="-fopenmp"],[],[])
+       AC_COMPILE_IFELSE([ AC_LANG_PROGRAM([#include <omp.h>], [
+-        omp_set_num_threads(1);])],[GOMP_LIBS="-lgomp"],[])
++        omp_set_num_threads(1);])],[GOMP_LIBS="-fopenmp"],[])
      fi
    else
      # Sun CC
