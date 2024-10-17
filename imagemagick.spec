@@ -47,7 +47,7 @@ Version:	7.1.1.29
 Release:	2
 License:	BSD-like
 Group:		Graphics
-Url:		http://www.imagemagick.org/
+Url:		https://www.imagemagick.org/
 Source0:	https://imagemagick.org/archive/releases/ImageMagick-%{dversion}.tar.xz
 # Also:	https://github.com/ImageMagick/ImageMagick/archive/%{dversion}/ImageMagick-%{dversion}.tar.gz
 Source1:	ImageMagick.pdf.bz2
