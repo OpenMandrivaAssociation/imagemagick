@@ -43,8 +43,8 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.1.1.29
-Release:	3
+Version:	7.1.1.39
+Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		https://www.imagemagick.org/
@@ -307,7 +307,6 @@ Categories=Graphics;Viewer;
 EOF
 
 %files
-%doc README.txt
 %doc %{_docdir}/ImageMagick-%{api}
 %{_sysconfdir}/ImageMagick-%{api}
 %{_bindir}/animate
@@ -365,6 +364,6 @@ EOF
 %doc %{_mandir}/man3*/*::*.3pm*
 
 %files doc
-%doc ImageMagick.pdf LICENSE NEWS* NOTICE
-%doc QuickStart.txt installed_docs/*
+%doc ImageMagick.pdf LICENSE NOTICE
+%doc installed_docs/*
 
