@@ -43,8 +43,8 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.1.2.3
-Release:	4
+Version:	7.1.2.11
+Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		https://www.imagemagick.org/
@@ -69,6 +69,11 @@ Patch19:	ImageMagick-libpath.diff
 #Patch20:	imagemagick-6.8.3-pkgconfig.patch
 
 Requires:	%{libMagickCore} = %{EVRD}
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	llvm-polly
 BuildRequires:	chrpath
 BuildRequires:	ghostscript
