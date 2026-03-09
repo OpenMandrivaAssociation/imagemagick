@@ -43,7 +43,7 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.1.2.11
+Version:	7.1.2.16
 Release:	1
 License:	BSD-like
 Group:		Graphics
@@ -211,7 +211,7 @@ rm -rf config/lt* m4/libtool.m4
 
 bzcat %{SOURCE1} > ImageMagick.pdf
 install -m 644 %{SOURCE10} %{SOURCE11} %{SOURCE12} %{SOURCE13} .
-libtoolize --copy --force; aclocal -I m4; autoconf; automake -a
+slibtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 
 %build
 #gw the format-string patch is incomplete:
@@ -248,11 +248,11 @@ export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 %endif
 	--with-raw=yes
 
-head -n20 libtool
-cp -f /usr/bin/libtool .
+#head -n20 libtool
+#cp -f /usr/bin/libtool .
 # Disable rpath
-sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
-sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
+#sed -i 's|^hardcode_libdir_flag_spec=.*|hardcode_libdir_flag_spec=""|g' libtool
+#sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 %make_build
 
