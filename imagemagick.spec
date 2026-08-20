@@ -44,7 +44,7 @@
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
 Version:	7.1.2.29
-Release:	1
+Release:	2
 License:	BSD-like
 Group:		Graphics
 Url:		https://www.imagemagick.org/
@@ -67,6 +67,13 @@ Patch7:		imagemagick-urw.diff
 Patch17:	imagemagick-fpx.diff
 Patch19:	ImageMagick-libpath.diff
 #Patch20:	imagemagick-6.8.3-pkgconfig.patch
+# Keep OpenMP for pixel loops, but use pthread mutexes for MagickCore
+# locks. omp_lock_t is not fork-safe and crashes php-fpm/imagick in
+# GetPolicyValue() after the worker has been running for a while.
+Patch21:	imagemagick-pthread-mutex-with-openmp.patch
+# OpenCL used lt_dlopen; we do not link libltdl (see Patch1). Use libc
+# dlopen and the runtime soname (libOpenCL.so is only in -devel).
+Patch22:	imagemagick-opencl-dlopen.patch
 
 Requires:	%{libMagickCore} = %{EVRD}
 BuildRequires:	autoconf
@@ -113,6 +120,7 @@ BuildRequires:	pkgconfig(libwebp)
 BuildRequires:	pkgconfig(libopenjp2)
 BuildRequires:	pkgconfig(fftw3)
 BuildRequires:	pkgconfig(OpenEXR)
+BuildRequires:	pkgconfig(OpenCL)
 %if ! %{with bootstrap}
 BuildRequires:	pkgconfig(ddjvuapi)
 %endif
@@ -216,8 +224,9 @@ slibtoolize --copy --force; aclocal -I m4; autoconf; automake -a
 %build
 #gw the format-string patch is incomplete:
 %define Werror_cflags %nil
-export CFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
-export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
+# Keep ${CFLAGS}/${CXXFLAGS} so a %%pgo pass can inject -fprofile-generate/use
+export CFLAGS="${CFLAGS:-%{optflags}} -fno-strict-aliasing -fPIC"
+export CXXFLAGS="${CXXFLAGS:-%{optflags}} -fno-strict-aliasing -fPIC"
 
 %configure \
 	--disable-static \
@@ -236,13 +245,14 @@ export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 	--without-windows-font-dir \
 	--with-modules \
 	--with-perl \
-	--with-perl-options="INSTALLDIRS=vendor CCFLAGS='%{optflags}' CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='%{build_ldflags} -shared -L$PWD/magick/.libs'" \
+	--with-perl-options="INSTALLDIRS=vendor CCFLAGS='${CFLAGS}' CC='%{__cc} -L$PWD/magick/.libs' LDDLFLAGS='${LDFLAGS:-%{?build_ldflags}} -shared -L$PWD/magick/.libs'" \
 	--with-openjp2=yes \
 	--with-gvc \
 	--with-lqr \
 	--with-fftw=yes \
 	--with-jxl=yes \
 	--with-zstd=yes \
+	--enable-opencl \
 %ifnarch %{riscv}
 	--with-rsvg=yes \
 %endif
@@ -255,6 +265,170 @@ export CXXFLAGS="%{optflags} -fno-strict-aliasing -fPIC"
 #sed -i 's|^runpath_var=LD_RUN_PATH|runpath_var=DIE_RPATH_DIE|g' libtool
 
 %make_build
+
+# Train the instrumented binary on the paths that dominate real use:
+# web/thumbnail convert (jpeg/png/webp/gif), identify, montage, compare,
+# composite, annotate, and the MagickWand/Magick++ APIs (php-imagick etc.).
+# Optional delegates (svg, pdf, heic, jxl, raw) are tried and ignored if
+# the coder or policy is unavailable. No X11.
+%pgo
+set +e
+export LLVM_PROFILE_FILE="%{_pgo_profile_dir}/imagemagick-%%m-%%p.profraw"
+# Do not let a GPU on the build host own the profile. CPU OpenCL (pocl
+# etc.) still trains the host enqueue path; if no CPU ICD exists, IM
+# falls back to the OpenMP implementations and those stay hot.
+export MAGICK_OCL_DEVICE=CPU
+
+TOP="$PWD"
+# slibtool drops coder .so files in .libs; magick.sh still points at coders/.
+MAGICK="$TOP/utilities/.libs/magick"
+if [ ! -x "$MAGICK" ]; then
+	MAGICK="$TOP/utilities/magick"
+fi
+if [ ! -x "$MAGICK" ]; then
+	echo "PGO: instrumented magick binary missing"
+	exit 1
+fi
+export LD_LIBRARY_PATH="$TOP/MagickCore/.libs:$TOP/MagickWand/.libs:$TOP/Magick++/lib/.libs${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export MAGICK_CODER_MODULE_PATH="$TOP/coders/.libs"
+export MAGICK_FILTER_MODULE_PATH="$TOP/filters/.libs"
+export MAGICK_CONFIGURE_PATH="$TOP/config"
+
+im() {
+	"$MAGICK" "$@"
+}
+
+# Fail only if the core CLI is broken; optional formats just warn.
+try() {
+	im "$@"
+	rc=$?
+	if [ $rc -ne 0 ]; then
+		echo "PGO: skipped (exit $rc): magick $*"
+	fi
+	return 0
+}
+
+WORKDIR="$PWD/pgo-train"
+rm -rf "$WORKDIR"
+mkdir -p "$WORKDIR"
+cd "$WORKDIR"
+
+# Built-in / generated sources — no extra SourceN files needed
+im logo: logo.png || exit 1
+im wizard: wizard.png || exit 1
+im rose: rose.png || exit 1
+try granite: granite.png
+try netscape: netscape.gif
+# Photo-sized raster so OpenMP / OpenCL-CPU kernels actually have work
+try -size 1280x720 plasma:fractal photo.png
+if [ ! -f photo.png ]; then
+	im logo: -resize 1280x720 photo.png || exit 1
+fi
+try -size 640x360 gradient:black-white gradient.png
+try -size 320x240 xc:'#224466' solid.png
+try -size 400x80 -background white -fill black -pointsize 28 caption:'ImageMagick PGO' caption.png
+
+# --- encode/decode the formats people actually convert between ---
+for fmt in jpg png webp gif tiff bmp ppm pam miff; do
+	try photo.png -quality 85 "enc.$fmt"
+	try "enc.$fmt" "round.png"
+done
+# ICO rejects large images; HEIC here wants 8-bit (HDRI default is 16)
+try rose.png enc.ico
+try enc.ico ico-round.png
+try photo.png -depth 8 out.heic
+try out.heic heic-round.png
+# JPEG variants: baseline, progressive, 4:2:0, grayscale
+try photo.png -quality 82 -sampling-factor 4:2:0 jpeg420.jpg
+try photo.png -interlace Plane -quality 80 jpegprog.jpg
+try photo.png -colorspace Gray -quality 80 jpeggray.jpg
+# PNG with alpha
+try wizard: -resize 400x PNG32:alpha.png
+try alpha.png -background none -resize 200x alpha-small.png
+# Animated GIF (WordPress / stickers)
+try -delay 8 -loop 0 logo: -resize 120x \
+	\( +clone -roll +8+0 \) \( +clone -roll +0+8 \) anim.gif
+try anim.gif -coalesce -resize 80x -layers optimize anim-opt.gif
+
+# Delegates that exist on this package but may be policy-gated
+try photo.png out.jxl
+try photo.png out.jp2
+try photo.png out.exr
+try rose.png out.svg
+try photo.png pdf:out.pdf
+try out.pdf[0] pdfpage.png
+if [ -f ../tests/input_svg_gradient_transform.svg ]; then
+	try ../tests/input_svg_gradient_transform.svg svg-in.png
+fi
+if [ -f ../tests/rose.pnm ]; then
+	try ../tests/rose.pnm rose-pnm.png
+fi
+
+# --- geometry / colors / filters (web + CLI workhorses) ---
+try photo.png -auto-orient -resize '1024x1024>' -strip -quality 82 web.jpg
+try photo.png -thumbnail 150x150^ -gravity center -extent 150x150 thumb.jpg
+try photo.png -crop 640x360+80+40 +repage crop.png
+try photo.png -rotate 90 rot.png
+try photo.png -flip -flop flip.png
+try photo.png -resize 50% -unsharp 0x0.75+0.75+0.008 unsharp.jpg
+try photo.png -gaussian-blur 0x1.2 blur.png
+try photo.png -sharpen 0x1.0 sharp.png
+try photo.png -brightness-contrast 5x5 bc.png
+try photo.png -modulate 105,110,100 mod.png
+try photo.png -level 5%,95% level.png
+try photo.png -normalize norm.png
+try photo.png -colorspace sRGB srgb.png
+try photo.png -colorspace Gray gray.png
+try photo.png -colorspace CMYK cmyk.jpg
+try photo.png -gamma 1.1 gamma.png
+try photo.png -posterize 16 post.png
+try photo.png -colors 64 +dither pal.png
+try photo.png -trim +repage trim.png
+try photo.png -bordercolor white -border 8 border.png
+try photo.png -resize 800x -quality 70 -strip -interlace Plane web-sm.jpg
+# liquid-rescale is lqr; cheap size so it does not dominate the train time
+try rose.png -liquid-rescale 50%x50% lqr.png
+
+# --- composite / annotate / draw (watermarks, captions) ---
+try photo.png -gravity southeast -pointsize 22 -fill white \
+	-annotate +16+16 'PGO watermark' annotated.jpg
+try photo.png caption.png -gravity south -geometry +0+10 -compose over -composite marked.png
+try -size 200x200 xc:none -fill '#cc3333' -draw 'circle 100,100 100,20' ball.png
+try photo.png ball.png -gravity northeast -geometry +20+20 -compose over -composite badged.png
+
+# --- CLI tools beyond convert ---
+try identify -verbose photo.png
+try identify jpeg420.jpg png:enc.png anim.gif
+try compare -metric RMSE photo.png web.jpg diff.png
+try montage logo.png wizard.png rose.png -geometry 120x120+4+4 -tile 3x1 sheet.png
+try mogrify -resize 320x -quality 80 jpeg420.jpg
+try stream -map rgb -storage-type char rose.png stream.rgb
+
+# --- MagickWand / Magick++ (php-imagick, PerlMagick, C++ users) ---
+cd "$TOP"
+make %{?_smp_mflags} tests/wandtest tests/drawtest tests/validate \
+	Magick++/tests/appendImages Magick++/tests/readWriteImages \
+	Magick++/tests/attributes Magick++/tests/color \
+	Magick++/tests/montageImages Magick++/tests/morphImages \
+	Magick++/tests/averageImages Magick++/tests/coalesceImages
+tests/wandtest
+tests/drawtest
+if [ -x tests/validate ]; then
+	# lowercase names match tests/validate-*.tap
+	for kind in convert identify compare composite montage magick stream colorspace; do
+		tests/validate -validate "$kind"
+	done
+fi
+export SRCDIR="$TOP/Magick++/tests/"
+for t in appendImages readWriteImages attributes color montageImages \
+	morphImages averageImages coalesceImages; do
+	if [ -x Magick++/tests/$t ]; then
+		Magick++/tests/$t
+	fi
+done
+
+rm -rf "$WORKDIR"
+exit 0
 
 %if %{build_test}
 %check

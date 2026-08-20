@@ -1,0 +1,46 @@
+--- ImageMagick-7.1.2-29/MagickCore/opencl.c
++++ ImageMagick-7.1.2-29/MagickCore/opencl.c
+@@ -90,9 +90,7 @@
+ #include "MagickCore/utility-private.h"
+ 
+ #if defined(MAGICKCORE_OPENCL_SUPPORT)
+-#if defined(MAGICKCORE_LTDL_DELEGATE)
+-#include "ltdl.h"
+-#endif
++#include <dlfcn.h>
+ 
+ /*
+   Define declarations.
+@@ -2481,7 +2479,7 @@ void *OsLibraryGetFunctionAddress(void *
+ {
+   if ((library == (void *) NULL) || (functionName == (const char *) NULL))
+     return (void *) NULL;
+-  return lt_dlsym(library,functionName);
++  return dlsym(library,functionName);
+ }
+ 
+ static MagickBooleanType BindOpenCLFunctions()
+@@ -2491,9 +2489,12 @@ static MagickBooleanType BindOpenCLFunct
+ #else
+   (void) memset(openCL_library,0,sizeof(MagickLibrary));
+ #ifdef MAGICKCORE_WINDOWS_SUPPORT
+-  openCL_library->library=(void *)lt_dlopen("OpenCL.dll");
++  openCL_library->library=(void *)LoadLibrary("OpenCL.dll");
+ #else
+-  openCL_library->library=(void *)lt_dlopen("libOpenCL.so");
++  /* Same as MagickCore/module.c: no libltdl. Soname first — .so is -devel. */
++  openCL_library->library=dlopen("libOpenCL.so.1",RTLD_NOW|RTLD_GLOBAL);
++  if (openCL_library->library == (void *) NULL)
++    openCL_library->library=dlopen("libOpenCL.so",RTLD_NOW|RTLD_GLOBAL);
+ #endif
+ #define BIND(X) \
+   if ((openCL_library->X=(MAGICKpfn_##X)OsLibraryGetFunctionAddress(openCL_library->library,#X)) == NULL) \
+@@ -2597,7 +2598,7 @@ MagickPrivate void OpenCLTerminus()
+   if (openCL_library != (MagickLibrary *) NULL)
+     {
+       if (openCL_library->library != (void *) NULL)
+-        (void) lt_dlclose(openCL_library->library);
++        (void) dlclose(openCL_library->library);
+       openCL_library=(MagickLibrary *) RelinquishMagickMemory(openCL_library);
+     }
+ }
