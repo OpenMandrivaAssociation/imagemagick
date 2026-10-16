@@ -1,7 +1,7 @@
---- ImageMagick-7.1.2-29/MagickCore/opencl.c
-+++ ImageMagick-7.1.2-29/MagickCore/opencl.c
-@@ -90,9 +90,7 @@
- #include "MagickCore/utility-private.h"
+--- ImageMagick-7.1.2-34/MagickCore/opencl.c
++++ ImageMagick-7.1.2-34/MagickCore/opencl.c
+@@ -91,9 +91,7 @@
+ #include "MagickCore/xml-tree-private.h"
  
  #if defined(MAGICKCORE_OPENCL_SUPPORT)
 -#if defined(MAGICKCORE_LTDL_DELEGATE)
