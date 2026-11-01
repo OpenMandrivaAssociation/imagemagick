@@ -43,13 +43,13 @@
 
 Summary:	An X application for displaying and manipulating images
 Name:		imagemagick
-Version:	7.1.2.34
+Version:	7.1.2.35
 Release:	1
 License:	BSD-like
 Group:		Graphics
 Url:		https://www.imagemagick.org/
-Source0:	https://imagemagick.org/archive/releases/ImageMagick-%{dversion}.tar.xz
-# Also:	https://github.com/ImageMagick/ImageMagick/archive/%{dversion}/ImageMagick-%{dversion}.tar.gz
+# imagemagick.org/archive/releases no longer serves these tarballs.
+Source0:	https://github.com/ImageMagick/ImageMagick/releases/download/%{dversion}/ImageMagick-%{dversion}.tar.xz
 Source1:	ImageMagick.pdf.bz2
 Source2:	%{name}.rpmlintrc
 # re-scaled from ftp://ftp.imagemagick.org/pub/ImageMagick/images/magick-icon.png
